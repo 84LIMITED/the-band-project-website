@@ -23,7 +23,7 @@ export default function HomePage() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
 
   const musicGroupData = generateStructuredData('MusicGroup', {
-    description: 'The Band Project - Timeless covers. Original music. A live entertainment experience designed to turn any night into a party.',
+    description: 'The Band Project NJ | Timeless Covers. Original Music. Always a Party.',
     genre: ['Rock', 'Jazz', 'Blues'],
     url: baseUrl,
   })
@@ -72,7 +72,7 @@ export default function HomePage() {
       <section className="sr-only">
         <h2>About The Band Project</h2>
         <p>
-          The Band Project-Timeless covers. Original music. One live entertainment experience designed to turn any night into a party. Playing local venues and festivals across the Tri-State area.
+          The Band Project NJ | Timeless Covers. Original Music. Always a Party. Playing local venues and festivals across the Tri-State area.
         </p>
       </section>
 

@@ -14,7 +14,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: 'The Band Project | Live Music Entertainment',
-  description: 'The Band Project - Timeless covers. Original music. One live entertainment experience designed to turn any night into a party',
+  description: 'The Band Project NJ | Timeless Covers. Original Music. Always a Party.',
   keywords: ['band', 'live music', 'entertainment', 'concerts', 'shows'],
   authors: [{ name: 'The Band Project' }],
   icons: {
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'The Band Project | Live Music Entertainment',
-    description: 'The Band Project - Timeless covers. Original music. One live entertainment experience designed to turn any night into a party',
+    description: 'The Band Project NJ | Timeless Covers. Original Music. Always a Party.',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'The Band Project | Live Music Entertainment',
-    description: 'The Band Project - Timeless covers. Original music. One live entertainment experience designed to turn any night into a party',
+    description: 'The Band Project NJ | Timeless Covers. Original Music. Always a Party.',
   },
   robots: {
     index: true,

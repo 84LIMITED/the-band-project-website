@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 
     const summary = {
       bandName: 'The Band Project',
-      description: 'The Band Project is a live music entertainment act that performs original compositions and covers across rock, jazz, and blues genres. Our live performances are characterized by cinematic staging, dynamic arrangements, and high-energy performances.',
+      description: 'The Band Project NJ | Timeless Covers. Original Music. Always a Party.',
       genre: ['Rock', 'Jazz', 'Blues'],
       baseLocation: 'United States',
       influences: [
