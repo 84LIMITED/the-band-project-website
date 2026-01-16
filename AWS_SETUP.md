@@ -182,7 +182,7 @@ Add these variables:
 | Variable Name | Value | Description |
 |---------------|-------|-------------|
 | `NEXT_PUBLIC_BASE_URL` | `https://thebandproject.com` | Your website URL |
-| `AWS_REGION` | `us-east-1` | AWS region (change if different) |
+| `AMPLIFY_REGION` | `us-east-1` | AWS region (change if different) |
 | `SHOWS_TABLE` | `the-band-project-shows` | DynamoDB shows table name |
 | `MESSAGES_TABLE` | `the-band-project-messages` | DynamoDB messages table name |
 | `CONTACT_EMAIL` | `contact@thebandproject.com` | Email for contact form |
@@ -261,7 +261,7 @@ Add these variables:
 
 **Error: "ResourceNotFoundException"**
 - Verify table names match exactly
-- Check AWS_REGION is correct
+- Check AMPLIFY_REGION is correct
 - Ensure IAM role has DynamoDB permissions
 
 **Error: "AccessDeniedException"**

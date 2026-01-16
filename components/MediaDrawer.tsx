@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MediaItem } from '@/lib/schema'
 
@@ -95,11 +96,14 @@ export default function MediaDrawer({ isOpen, onClose, mediaItems }: MediaDrawer
                         Your browser does not support the video tag.
                       </video>
                     ) : (
-                      <img
-                        src={item.url}
-                        alt={item.description || item.title}
-                        className="w-full"
-                      />
+                      <div className="relative w-full aspect-video">
+                        <Image
+                          src={item.url}
+                          alt={item.description || item.title}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
                     )}
                     <div>
                       <h3 className="text-lg font-medium mb-1">{item.title}</h3>

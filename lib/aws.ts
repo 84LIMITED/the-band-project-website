@@ -4,13 +4,13 @@ import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
 
 // Initialize AWS clients
 const dynamoClient = new DynamoDBClient({
-  region: process.env.AWS_REGION || 'us-east-1',
+  region: process.env.AMPLIFY_REGION || 'us-east-1',
 })
 
 const dynamoDocClient = DynamoDBDocumentClient.from(dynamoClient)
 
 const sesClient = new SESClient({
-  region: process.env.AWS_REGION || 'us-east-1',
+  region: process.env.AMPLIFY_REGION || 'us-east-1',
 })
 
 // DynamoDB table names

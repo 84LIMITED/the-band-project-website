@@ -182,7 +182,7 @@ Click **Next**
 | Variable Name | Value | Example |
 |--------------|-------|---------|
 | `NEXT_PUBLIC_BASE_URL` | Your production URL | `https://thebandproject.com` |
-| `AWS_REGION` | Your AWS region | `us-east-1` |
+| `AMPLIFY_REGION` | Your AWS region | `us-east-1` |
 | `SHOWS_TABLE` | DynamoDB table name | `the-band-project-shows` |
 | `MESSAGES_TABLE` | DynamoDB table name | `the-band-project-messages` |
 | `CONTACT_EMAIL` | Your contact email | `contact@thebandproject.com` |

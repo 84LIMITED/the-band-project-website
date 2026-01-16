@@ -1,4 +1,5 @@
 import Script from 'next/script'
+import Image from 'next/image'
 import { generateMetadata as genMetadata, generateStructuredData } from '@/lib/seo'
 import { Metadata } from 'next'
 
@@ -27,7 +28,7 @@ export default function BackgroundPage() {
       <section className="sr-only">
         <h2>About The Band Project</h2>
         <p> Two lawyers, an actress, a surgeon, and a talent acquirer walked into a bar.
-What came out wasn’t a punchline—it was The Band Project.
+What came out wasn&apos;t a punchline—it was The Band Project.
 
 All hailing from Wyckoff, New Jersey, the group had been playing local events, jam sessions, and community gatherings for years—often crossing paths musically without realizing what could happen if they actually committed. In 2025, they did.
 
@@ -51,7 +52,7 @@ What started as a shared love of live music and performance evolved into a band 
             <div className="prose prose-invert max-w-none">
               <p className="text-lg text-secondary leading-relaxed mb-4">
                 Two lawyers, an actress, a surgeon, and a talent acquirer walked into a bar.
-                What came out wasn't a punchline—it was The Band Project.
+                What came out wasn&apos;t a punchline—it was The Band Project.
               </p>
               <p className="text-lg text-secondary leading-relaxed mb-4">
                 All hailing from Wyckoff, New Jersey, the group had been playing local events, jam sessions, and community gatherings for years—often crossing paths musically without realizing what could happen if they actually committed. In 2025, they did.
@@ -145,12 +146,13 @@ We believe live music should create connection, community, and release—and we 
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div
                   key={i}
-                  className="aspect-square overflow-hidden bg-white/10"
+                  className="relative aspect-square overflow-hidden bg-white/10"
                 >
-                  <img
+                  <Image
                     src={`/images/gallery-${i}.png`}
                     alt={`The Band Project gallery image ${i}`}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               ))}

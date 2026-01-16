@@ -184,7 +184,7 @@ Configure these in **AWS Amplify Console → App settings → Environment variab
 | Variable | Description | Required | Default (Local) |
 |----------|-------------|----------|----------------|
 | `NEXT_PUBLIC_BASE_URL` | Base URL of the website | Production only | `http://localhost:3000` |
-| `AWS_REGION` | AWS region for services | Production only | `us-east-1` |
+| `AMPLIFY_REGION` | AWS region for services | Production only | `us-east-1` |
 | `SHOWS_TABLE` | DynamoDB shows table name | Production only | Uses static data |
 | `MESSAGES_TABLE` | DynamoDB messages table name | Production only | Uses static data |
 | `CONTACT_EMAIL` | Email for contact form submissions | Production only | `contact@thebandproject.com` |

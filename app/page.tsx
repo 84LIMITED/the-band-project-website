@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Script from 'next/script'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import HeroVideo from '@/components/HeroVideo'
 import ShowCard from '@/components/ShowCard'
@@ -134,10 +135,11 @@ export default function HomePage() {
                   >
                     {item.thumbnail && (
                       <div className="relative aspect-video mb-4 overflow-hidden">
-                        <img
+                        <Image
                           src={item.thumbnail}
                           alt={item.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-colors">
                           <svg

@@ -71,7 +71,7 @@ Configure these in **AWS Amplify Console** (not needed for local dev):
 | Variable | Value |
 |----------|-------|
 | `NEXT_PUBLIC_BASE_URL` | Your production URL |
-| `AWS_REGION` | `us-east-1` (or your region) |
+| `AMPLIFY_REGION` | `us-east-1` (or your region) |
 | `SHOWS_TABLE` | `the-band-project-shows` |
 | `MESSAGES_TABLE` | `the-band-project-messages` |
 | `CONTACT_EMAIL` | `contact@thebandproject.com` |

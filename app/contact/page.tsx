@@ -230,7 +230,7 @@ export default function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="p-4 bg-white/10 border border-white/20"
               >
-                <p className="text-white">Thank you! Your message has been sent. We'll get back to you soon.</p>
+                <p className="text-white">Thank you! Your message has been sent. We&apos;ll get back to you soon.</p>
               </motion.div>
             )}
 
