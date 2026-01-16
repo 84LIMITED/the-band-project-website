@@ -1,0 +1,34 @@
+[
+  {
+    "id": "media-1",
+    "title": "Live Performance Highlights from Shortways Barn",
+    "type": "video",
+    "url": "/video/highlights-1.mp4",
+    "thumbnail": "/images/highlights-1-thumb.png",
+    "description": "Clips from Shortways Barn"
+  },
+  {
+    "id": "media-2",
+    "title": "Live Performance Highlights from Shortways Barn",
+    "type": "video",
+    "url": "/video/highlights-2.mp4",
+    "thumbnail": "/images/highlights-2-thumb.png",
+    "description": "Clips from Shortways Barn"
+  },
+  {
+    "id": "media-3",
+    "title": "Live Performance Highlights from Shortways Barn",
+    "type": "video",
+    "url": "/video/highlights-3.mp4",
+    "thumbnail": "/images/highlights-3-thumb.png",
+    "description": "Clips from Shortways Barn"
+  },
+  {
+    "id": "media-4",
+    "title": "Live Performance Highlights from Shortways Barn",
+    "type": "video",
+    "url": "/video/highlights-4.mp4",
+    "thumbnail": "/images/highlights-4-thumb.png",
+    "description": "Clips from Shortways Barn"
+  }
+]

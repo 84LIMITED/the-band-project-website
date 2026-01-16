@@ -1,0 +1,32 @@
+[
+  {
+    "id": "show-1",
+    "date": "2026-05-30",
+    "venue": "TBD",
+    "city": "TBD",
+    "state": "TBD",
+    "time": "9:00 PM",
+    "doors": "8:00 PM",
+    "isUpcoming": true
+  },
+  {
+    "id": "show-2",
+    "date": "2026-07-18",
+    "venue": "TBD",
+    "city": "TBD",
+    "state": "TBD",
+    "time": "9:00 PM",
+    "doors": "8:00 PM",
+    "isUpcoming": true
+  },
+  {
+    "id": "show-3",
+    "date": "2026-10-31",
+    "venue": "TBD",
+    "city": "TBD",
+    "state": "TBD",
+    "time": "9:30 PM",
+    "doors": "8:30 PM",
+    "isUpcoming": true
+  }
+]
