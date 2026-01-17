@@ -48,7 +48,7 @@ export default function GearPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl">
               {/* T-Shirt */}
               <a
-                href="https://square.link/YOUR_TSHIRT_LINK"
+                href="https://square.link/u/Da5MZugw"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="aspect-square bg-white/10 border border-white/20 flex flex-col items-center justify-center p-6 hover:border-white/40 transition-colors group"
@@ -59,7 +59,7 @@ export default function GearPage() {
 
               {/* Laptop Sticker */}
               <a
-                href="https://square.link/YOUR_STICKER_LINK"
+                href="https://square.link/u/4m8hNpEZ"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="aspect-square bg-white/10 border border-white/20 flex flex-col items-center justify-center p-6 hover:border-white/40 transition-colors group"
