@@ -85,13 +85,13 @@ Every show is crafted to be immersive and energetic, with thoughtfully curated s
 
 Whether it’s an intimate club, a packed bar, or a festival stage, the approach stays consistent:
 
-Read the room
+Read the room.
 
-Build momentum
+Build momentum. 
 
-Deliver moments people remember
+Deliver moments people never forget.
 
-We believe live music should create connection, community, and release—and we bring that mindset to every venue and festival we play across the tri-state area.
+We believe live music should create connection, community, and love—and we bring that mindset to every venue and festival we play across the New York tri-state area.
               </p>
             </div>
           </section>
@@ -118,9 +118,9 @@ We believe live music should create connection, community, and release—and we 
             <h2 className="text-3xl md:text-4xl font-extrabold mb-6 uppercase">Live Performance</h2>
             <div className="prose prose-invert max-w-none">
               <p className="text-lg text-secondary leading-relaxed mb-4">
-              Designed to move the room
+              Designed to move the room, 
 
-Live performance is where The Band Project truly comes alive.
+Live performances are where The Band Project truly comes alive.
               </p>
               <p className="text-lg text-secondary leading-relaxed mb-4">
               Every show is crafted to be immersive and energetic, with thoughtfully curated setlists, dynamic arrangements, and a strong connection to the audience. No two performances are exactly the same—improvisation and in-the-moment decisions keep things fresh for both the band and the crowd.
@@ -128,13 +128,13 @@ Live performance is where The Band Project truly comes alive.
               <p className="text-lg text-secondary leading-relaxed">
               Whether it’s an intimate club, a packed bar, or a festival stage, the approach stays consistent:
 
-Read the room
+Read the room. 
 
-Build momentum
+Build momentum. 
 
-Deliver moments people remember
+Deliver moments people never forget. 
 
-We believe live music should create connection, community, and release—and we bring that mindset to every venue and festival we play across the tri-state area.
+We believe live music should create connection, community, and love—-and we bring that mindset to every venue and festival we play across the New York tri-state area.
               </p>
             </div>
           </section>
