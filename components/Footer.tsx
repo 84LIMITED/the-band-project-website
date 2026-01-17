@@ -30,7 +30,7 @@ export default function Footer() {
             <div className="col-span-4 md:col-span-6">
               <h3 className="text-xl font-medium mb-4">The Band Project</h3>
               <p className="text-secondary text-sm max-w-md">
-                A cinematic live music experience. Book us for your next event.
+                Always a Party. Book us for your next event.
               </p>
             </div>
             <div className="col-span-4 md:col-span-3">
@@ -63,7 +63,7 @@ export default function Footer() {
               <ul className="space-y-2 text-sm text-secondary">
                 {/* Add social links here */}
                 <li>
-                  <a href="mailto:contact@thebandproject.com" className="hover:text-white transition-colors">
+                  <a href="mailto:book@thebandproject.live" className="hover:text-white transition-colors">
                     Email
                   </a>
                 </li>
