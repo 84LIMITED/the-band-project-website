@@ -61,7 +61,7 @@ git push
 1. Go to **AWS Console** → **SES** (Simple Email Service)
 2. Click **Verified identities** → **Create identity**
 3. Choose **Email address** or **Domain**
-4. Enter your email: `contact@thebandproject.com` (or your domain)
+4. Enter your email: `book@thebandproject.live` (or your domain)
 5. Click **Create identity**
 6. Check your email and click verification link
 7. **Note:** SES starts in "Sandbox" mode (can only send to verified emails)
@@ -185,7 +185,7 @@ Click **Next**
 | `AMPLIFY_REGION` | Your AWS region | `us-east-1` |
 | `SHOWS_TABLE` | DynamoDB table name | `the-band-project-shows` |
 | `MESSAGES_TABLE` | DynamoDB table name | `the-band-project-messages` |
-| `CONTACT_EMAIL` | Your contact email | `contact@thebandproject.com` |
+| `CONTACT_EMAIL` | Your contact email | `book@thebandproject.live` |
 
 5. Click **Save**
 

@@ -187,7 +187,7 @@ Configure these in **AWS Amplify Console → App settings → Environment variab
 | `AMPLIFY_REGION` | AWS region for services | Production only | `us-east-1` |
 | `SHOWS_TABLE` | DynamoDB shows table name | Production only | Uses static data |
 | `MESSAGES_TABLE` | DynamoDB messages table name | Production only | Uses static data |
-| `CONTACT_EMAIL` | Email for contact form submissions | Production only | `contact@thebandproject.com` |
+| `CONTACT_EMAIL` | Email for contact form submissions | Production only | `book@thebandproject.live` |
 
 **Note:** The site works locally without these variables. They're only needed for production AWS integration.
 

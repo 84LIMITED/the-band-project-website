@@ -74,7 +74,7 @@ Configure these in **AWS Amplify Console** (not needed for local dev):
 | `AMPLIFY_REGION` | `us-east-1` (or your region) |
 | `SHOWS_TABLE` | `the-band-project-shows` |
 | `MESSAGES_TABLE` | `the-band-project-messages` |
-| `CONTACT_EMAIL` | `contact@thebandproject.com` |
+| `CONTACT_EMAIL` | `book@thebandproject.live` |
 
 ---
 

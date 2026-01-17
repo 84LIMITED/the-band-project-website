@@ -18,7 +18,7 @@ const SHOWS_TABLE = process.env.SHOWS_TABLE || 'the-band-project-shows'
 const MESSAGES_TABLE = process.env.MESSAGES_TABLE || 'the-band-project-messages'
 
 // Contact form email configuration
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'contact@thebandproject.com'
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'book@thebandproject.live'
 
 export async function getUpcomingShows(): Promise<any[]> {
   try {

@@ -62,7 +62,7 @@ export default function Footer() {
               <h4 className="text-sm uppercase tracking-wider mb-4">Connect</h4>
               <ul className="space-y-2 text-sm text-secondary">
                 <li>
-                  <a href="mailto:book@thebandproject.live" className="hover:text-white transition-colors">
+                  <a href="/contact" className="hover:text-white transition-colors">
                     Email
                   </a>
                 </li>

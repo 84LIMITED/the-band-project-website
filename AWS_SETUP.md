@@ -85,7 +85,7 @@ If you prefer to verify just an email address:
 1. **Create Identity**
    - Click **Create identity**
    - Select **Email address**
-   - Enter: `contact@thebandproject.com`
+   - Enter: `book@thebandproject.live`
    - Click **Create identity**
 
 2. **Check Email**
@@ -185,7 +185,7 @@ Add these variables:
 | `AMPLIFY_REGION` | `us-east-1` | AWS region (change if different) |
 | `SHOWS_TABLE` | `the-band-project-shows` | DynamoDB shows table name |
 | `MESSAGES_TABLE` | `the-band-project-messages` | DynamoDB messages table name |
-| `CONTACT_EMAIL` | `contact@thebandproject.com` | Email for contact form |
+| `CONTACT_EMAIL` | `book@thebandproject.live` | Email for contact form |
 
 3. **Attach IAM Role**
    - Go to **App settings** → **General**
