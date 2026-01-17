@@ -51,7 +51,7 @@ What started as a shared love of live music and performance evolved into a band 
             <h2 className="text-3xl md:text-4xl font-extrabold mb-6 uppercase">Origin Story</h2>
             <div className="prose prose-invert max-w-none">
               <p className="text-lg text-secondary leading-relaxed mb-4">
-                Two lawyers, an actress, a surgeon, and a talent acquirer walked into a bar.
+                Two lawyers, an actress, a surgeon, an ad tech guy, and a talent recruiter walked into a bar.
                 What came out wasn&apos;t a punchline—it was The Band Project.
               </p>
               <p className="text-lg text-secondary leading-relaxed mb-4">
