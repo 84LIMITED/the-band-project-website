@@ -86,7 +86,7 @@ export default function ContactPage() {
         <h2>Contact The Band Project</h2>
         <p>
           To book The Band Project for your event or venue, use our contact form. We accept
-          booking inquiries for performances in the United States. Include your name, email,
+          booking inquiries for performances in the greater New York Tri-State area (New York, New Jersey, and Connecticut). Include your name, email,
           organization, event date, venue location, and message details. We respond to all
           inquiries promptly.
         </p>

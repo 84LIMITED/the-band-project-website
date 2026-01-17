@@ -31,7 +31,7 @@ export async function GET(request: Request) {
       bandName: 'The Band Project',
       description: 'The Band Project NJ | Timeless Covers. Original Music. Always a Party.',
       genre: ['Rock', 'Jazz', 'Blues'],
-      baseLocation: 'United States',
+      baseLocation: 'Greater New York Tri-State Area (New York, New Jersey, Connecticut)',
       influences: [
         'Pink Floyd',
         'The Beatles',

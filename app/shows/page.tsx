@@ -82,10 +82,8 @@ export default function ShowsPage() {
       <section className="sr-only">
         <h2>Upcoming Shows - The Band Project</h2>
         <p>
-          The Band Project has upcoming performances scheduled at venues across the United States.
-          Shows are scheduled in cities including Los Angeles, California; New York, New York; and
-          San Francisco, California. Tickets are available for purchase through our official ticket
-          links. Each show includes specific date, time, venue name, and location information.
+          The Band Project has upcoming performances scheduled at venues across the greater New York Tri-State area (New York, New Jersey, and Connecticut).
+           Each show includes specific date, time, venue name, and location information.
         </p>
       </section>
 
@@ -95,7 +93,7 @@ export default function ShowsPage() {
           <header className="mb-12">
             <h1 className="text-5xl md:text-6xl font-black mb-6 uppercase">Shows</h1>
             <p className="text-xl text-secondary">
-              Upcoming performances and tour dates
+              Upcoming performances in the greater New York Tri-State area
             </p>
           </header>
 
