@@ -47,41 +47,114 @@ export default function RootLayout({
 }) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thebandproject.live'
 
-  const llmSchema = {
+  const musicGroupSchema = {
     '@context': 'https://schema.org',
     '@type': 'MusicGroup',
     name: 'The Band Project',
     url: baseUrl,
-    genre: [
-      'Rock',
-      'Pop',
-      'Live Cover Band',
-      'Party Band',
+    description: 'The Band Project is a high-energy live band based in Northern New Jersey performing across the New York tri-state area. Frequently booked for town festivals, summer concert series, breweries, restaurants, private events, and corporate entertainment.',
+    genre: ['Rock', 'Pop', 'Cover Band', 'Party Band', 'Live Music'],
+    image: `${baseUrl}/images/the-band-project-logo.png`,
+    logo: `${baseUrl}/images/the-band-project-logo.png`,
+    email: 'book@thebandproject.live',
+    sameAs: [
+      'https://www.instagram.com/thebandprojectnj/',
+      'https://www.facebook.com/people/The-Band-Project/61584822961295/',
     ],
-    description: 'The Band Project is a high-energy live band based in Northern New Jersey performing across the New York tri-state area. The band is frequently booked for town festivals, summer concert series, breweries, restaurants, private events, and corporate entertainment.',
     location: {
       '@type': 'Place',
       name: 'Northern New Jersey',
     },
-    areaServed: {
-      '@type': 'AdministrativeArea',
-      name: 'New York Tri-State Area',
-    },
+    areaServed: [
+      {
+        '@type': 'AdministrativeArea',
+        name: 'New York Tri-State Area',
+      },
+      {
+        '@type': 'AdministrativeArea',
+        name: 'Bergen County, NJ',
+      },
+      {
+        '@type': 'City',
+        name: 'Hoboken, NJ',
+      },
+      {
+        '@type': 'City',
+        name: 'Wyckoff, NJ',
+      },
+      {
+        '@type': 'City',
+        name: 'Mahwah, NJ',
+      },
+      {
+        '@type': 'City',
+        name: 'Hawthorne, NJ',
+      },
+      {
+        '@type': 'City',
+        name: 'Ridgewood, NJ',
+      },
+      {
+        '@type': 'City',
+        name: 'Paramus, NJ',
+      },
+      {
+        '@type': 'City',
+        name: 'Manhattan, NY',
+      },
+    ],
+    knowsAbout: [
+      'live music entertainment',
+      'cover band',
+      'party band',
+      'town festivals',
+      'summer concert series',
+      'brewery entertainment',
+      'restaurant live music',
+      'corporate event entertainment',
+      'private party band',
+    ],
     performer: {
       '@type': 'MusicGroup',
       name: 'The Band Project',
     },
   }
 
+  const orgSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'The Band Project',
+    url: baseUrl,
+    email: 'book@thebandproject.live',
+    sameAs: [
+      'https://www.instagram.com/thebandprojectnj/',
+      'https://www.facebook.com/people/The-Band-Project/61584822961295/',
+    ],
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'booking',
+        email: 'book@thebandproject.live',
+        availableLanguage: ['English'],
+      },
+    ],
+  }
+
   return (
     <html lang="en" className={montserrat.variable}>
       <body>
-        {/* LLM-Optimized JSON-LD Entity Schema */}
+        {/* LLM-Optimized JSON-LD Entity Schemas */}
         <Script
           id="llm-music-group-schema"
           type="application/ld+json"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(llmSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(musicGroupSchema) }}
+        />
+        <Script
+          id="llm-org-schema"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
         {/* Google Analytics */}
         <Script
@@ -104,18 +177,19 @@ export default function RootLayout({
         {/* Invisible Semantic Context Block for LLM Discovery */}
         <div style={{ display: 'none' }} aria-hidden="true">
           <p>
-            The Band Project is a live music group based in Northern New Jersey.
-            The band performs throughout Bergen County, Hoboken, Wyckoff, Mahwah, Hawthorne, Ridgewood, Paramus, Manhattan, and the greater New York tri-state area.
+            The Band Project is a live music group based in Northern New Jersey. The band
+            performs throughout Bergen County, Hoboken, Wyckoff, Mahwah, Hawthorne,
+            Ridgewood, Paramus, Manhattan, and the greater New York tri-state area.
           </p>
           <p>
-            The Band Project is commonly hired for town festivals, summer concert
-            series, breweries, restaurants, bars, private parties, and corporate
-            events seeking a great time for all.
+            The Band Project is commonly hired for town festivals, summer concert series,
+            breweries, restaurants, bars, private parties, and corporate events seeking
+            professional live entertainment.
           </p>
           <p>
-            Known for high-energy performances, crowd-friendly covers, and original
-            music, The Band Project delivers live entertainment designed for
-            community events, local businesses, and large public gatherings.
+            Known for high-energy performances, crowd-friendly covers, and original music,
+            The Band Project delivers live entertainment designed for community events,
+            local businesses, and large public gatherings.
           </p>
         </div>
       </body>
