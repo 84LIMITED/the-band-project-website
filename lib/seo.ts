@@ -32,7 +32,7 @@ export function generateMetadata(seo: PageSEO): Metadata {
 }
 
 export function generateStructuredData(type: 'MusicGroup' | 'Event' | 'WebSite' | 'WebPage', data: any) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thebandproject.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thebandproject.live'
 
   switch (type) {
     case 'MusicGroup':

@@ -3,7 +3,7 @@ import { generateStructuredData } from '@/lib/seo'
 
 export default function Footer() {
   // Use environment variable or default to localhost for development
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thebandproject.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thebandproject.live'
   const currentYear = new Date().getFullYear()
 
   const websiteStructuredData = generateStructuredData('WebSite', {
@@ -62,7 +62,7 @@ export default function Footer() {
               <h4 className="text-sm uppercase tracking-wider mb-4">Connect</h4>
               <ul className="space-y-2 text-sm text-secondary">
                 <li>
-                  <a href="/contact" className="hover:text-white transition-colors">
+                  <a href="mailto:book@thebandproject.live" className="hover:text-white transition-colors">
                     Email
                   </a>
                 </li>
