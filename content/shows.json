@@ -5,28 +5,18 @@
     "venue": "TBD",
     "city": "TBD",
     "state": "TBD",
-    "time": "9:00 PM",
+    "time": "8:00 PM – 11:00 PM",
     "doors": "8:00 PM",
     "isUpcoming": true
   },
   {
     "id": "show-2",
-    "date": "2026-07-18",
-    "venue": "TBD",
-    "city": "TBD",
-    "state": "TBD",
-    "time": "9:00 PM",
-    "doors": "8:00 PM",
-    "isUpcoming": true
-  },
-  {
-    "id": "show-3",
-    "date": "2026-10-31",
-    "venue": "TBD",
-    "city": "TBD",
-    "state": "TBD",
-    "time": "9:30 PM",
-    "doors": "8:30 PM",
+    "date": "2026-06-27",
+    "venue": "Wyckoff Memorial Field",
+    "city": "Wyckoff",
+    "state": "NJ",
+    "time": "6:00 PM – 7:15 PM",
+    "doors": "6:00 PM",
     "isUpcoming": true
   }
 ]
