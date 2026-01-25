@@ -10,11 +10,11 @@ interface ShowCardProps {
 
 export default function ShowCard({ show, index = 0 }: ShowCardProps) {
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    // Check if date is valid
-    if (isNaN(date.getTime())) {
-      return dateString // Return original string if invalid
-    }
+    // Parse as local date (YYYY-MM-DD) to avoid timezone shifting to previous day
+    const [y, m, d] = dateString.split('-').map(Number)
+    if (!y || !m || !d) return dateString
+    const date = new Date(y, m - 1, d) // month is 0-indexed
+    if (isNaN(date.getTime())) return dateString
     return date.toLocaleDateString('en-US', {
       month: 'long',
       day: 'numeric',

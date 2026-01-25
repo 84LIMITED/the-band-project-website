@@ -8,6 +8,9 @@ import { generateStructuredData } from '@/lib/seo'
 import { Show } from '@/lib/schema'
 import showsData from '@/content/shows.json'
 
+// To update show dates/locations: edit content/shows.json (not this file).
+// Use date format YYYY-MM-DD (e.g. "2026-05-09" for May 9). Display is in components/ShowCard.tsx.
+
 export default function ShowsPage() {
   const [shows, setShows] = useState<Show[]>([])
   const [filter, setFilter] = useState<string>('all')
