@@ -5,6 +5,7 @@
     "venue": "Mason Jar",
     "city": "Mahwah",
     "state": "NJ",
+    "address": "219 Ramapo Valley Road, Mahwah, NJ 07430",
     "time": "8:00 PM – 11:00 PM",
     "doors": "8:00 PM",
     "isUpcoming": true
@@ -15,6 +16,7 @@
     "venue": "Wyckoff Memorial Field",
     "city": "Wyckoff",
     "state": "NJ",
+    "address": "195 Woodland Ave, Wyckoff, NJ 07481",
     "time": "6:00 PM – 7:15 PM",
     "doors": "6:00 PM",
     "isUpcoming": true

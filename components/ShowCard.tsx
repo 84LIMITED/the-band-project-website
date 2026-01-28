@@ -85,6 +85,15 @@ export default function ShowCard({ show, index = 0 }: ShowCardProps) {
       return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
     }
 
+    // Full address for calendar only (not displayed on site)
+    const locationParts = [show.venue, show.city, show.state].filter(Boolean)
+    const locationLine = show.address
+      ? `${show.address}, ${locationParts.join(', ')}`
+      : locationParts.join(', ')
+    const descriptionLine = show.address
+      ? `${show.address}\\n${show.venue}, ${show.city}, ${show.state}`
+      : `${show.venue}, ${show.city}, ${show.state}`
+
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
@@ -93,8 +102,8 @@ export default function ShowCard({ show, index = 0 }: ShowCardProps) {
       `DTSTART:${formatICSDate(startDate)}`,
       `DTEND:${formatICSDate(endDate)}`,
       `SUMMARY:The Band Project at ${show.venue}`,
-      `DESCRIPTION:${show.venue}, ${show.city}, ${show.state}`,
-      `LOCATION:${show.venue}, ${show.city}, ${show.state}`,
+      `DESCRIPTION:${descriptionLine}`,
+      `LOCATION:${locationLine}`,
       'END:VEVENT',
       'END:VCALENDAR',
     ].join('\r\n')

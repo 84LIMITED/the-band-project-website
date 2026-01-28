@@ -4,6 +4,7 @@ export interface Show {
   venue: string
   city: string
   state: string
+  address?: string // Full street address for calendar only; not displayed on site
   time?: string
   doors?: string
   ticketUrl?: string
