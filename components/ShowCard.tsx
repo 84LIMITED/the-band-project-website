@@ -22,70 +22,75 @@ export default function ShowCard({ show, index = 0 }: ShowCardProps) {
     })
   }
 
-  // Convert time from "8:00 PM" format to 24-hour format
+  // Convert single time from "8:00 PM" format to 24-hour "HH:MM"
   const convertTimeTo24Hour = (timeStr: string): string => {
     if (!timeStr) return '20:00'
-    
-    // Remove spaces and convert to uppercase
     const cleaned = timeStr.trim().toUpperCase()
-    
-    // Check if already in 24-hour format (contains : and no AM/PM)
     if (cleaned.includes(':') && !cleaned.includes('AM') && !cleaned.includes('PM')) {
       return cleaned
     }
-    
-    // Parse 12-hour format
     const match = cleaned.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i)
     if (!match) return '20:00'
-    
     let hours = parseInt(match[1], 10)
     const minutes = match[2]
     const period = match[3]?.toUpperCase() || ''
-    
-    if (period === 'PM' && hours !== 12) {
-      hours += 12
-    } else if (period === 'AM' && hours === 12) {
-      hours = 0
-    }
-    
+    if (period === 'PM' && hours !== 12) hours += 12
+    else if (period === 'AM' && hours === 12) hours = 0
     return `${hours.toString().padStart(2, '0')}:${minutes}`
+  }
+
+  // Parse "8:00 PM – 11:00 PM" or "6:00 PM – 7:15 PM" into start/end 24h times
+  const parseTimeRange = (timeStr: string): { start24: string; end24: string } | null => {
+    if (!timeStr) return null
+    const parts = timeStr.split(/[–\-]\s*/).map((s) => s.trim()).filter(Boolean)
+    if (parts.length >= 2) {
+      const start24 = convertTimeTo24Hour(parts[0])
+      const end24 = convertTimeTo24Hour(parts[1])
+      return { start24, end24 }
+    }
+    if (parts.length === 1) {
+      const start24 = convertTimeTo24Hour(parts[0])
+      return { start24, end24: start24 }
+    }
+    return null
   }
 
   const generateCalendarLink = (show: Show) => {
     try {
-      const time24 = convertTimeTo24Hour(show.time || '20:00')
-      const dateTimeString = `${show.date}T${time24}:00`
-      const startDate = new Date(dateTimeString)
-      
-      // Validate date
-      if (isNaN(startDate.getTime())) {
-        // Fallback: use date only with default time
-        const fallbackDate = new Date(`${show.date}T20:00:00`)
-        if (isNaN(fallbackDate.getTime())) {
-          // If still invalid, return empty string to prevent error
-          return ''
-        }
-        const endDate = new Date(fallbackDate.getTime() + 2 * 60 * 60 * 1000)
-        return generateICSContent(fallbackDate, endDate, show)
-      }
-      
-      const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000) // 2 hours later
-      return generateICSContent(startDate, endDate, show)
+      const range = parseTimeRange(show.time || '')
+      const start24 = range?.start24 ?? '20:00'
+      const end24 = range?.end24 ?? '22:00'
+      if (!show.date || !/^\d{4}-\d{2}-\d{2}$/.test(show.date)) return ''
+
+      return generateICSContent(show, show.date, start24, end24)
     } catch (error) {
       console.error('Error generating calendar link:', error)
       return ''
     }
   }
 
-  const generateICSContent = (startDate: Date, endDate: Date, show: Show) => {
-    const formatICSDate = (date: Date) => {
-      if (isNaN(date.getTime())) {
-        throw new Error('Invalid date')
-      }
-      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
+  // Build ICS with times in Eastern (America/New_York) so calendar shows ET and correct duration
+  const generateICSContent = (
+    show: Show,
+    dateStr: string,
+    start24: string,
+    end24: string
+  ) => {
+    const dateFmt = dateStr.replace(/-/g, '')
+    const startFmt = `${dateFmt}T${start24.replace(':', '')}00`
+    let endDateStr = dateStr
+    let endFmt: string
+    const [sh, sm] = start24.split(':').map(Number)
+    const [eh, em] = end24.split(':').map(Number)
+    const startMins = sh * 60 + (sm || 0)
+    const endMins = eh * 60 + (em || 0)
+    if (endMins <= startMins) {
+      const next = new Date(dateStr)
+      next.setDate(next.getDate() + 1)
+      endDateStr = next.toISOString().slice(0, 10)
     }
+    endFmt = `${endDateStr.replace(/-/g, '')}T${end24.replace(':', '')}00`
 
-    // Full address for calendar only (not displayed on site)
     const locationParts = [show.venue, show.city, show.state].filter(Boolean)
     const locationLine = show.address
       ? `${show.address}, ${locationParts.join(', ')}`
@@ -98,9 +103,26 @@ export default function ShowCard({ show, index = 0 }: ShowCardProps) {
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
       'PRODID:-//The Band Project//NONSGML v1.0//EN',
+      'BEGIN:VTIMEZONE',
+      'TZID:America/New_York',
+      'BEGIN:DAYLIGHT',
+      'TZOFFSETFROM:-0500',
+      'TZOFFSETTO:-0400',
+      'TZNAME:EDT',
+      'DTSTART:19700308T020000',
+      'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
+      'END:DAYLIGHT',
+      'BEGIN:STANDARD',
+      'TZOFFSETFROM:-0400',
+      'TZOFFSETTO:-0500',
+      'TZNAME:EST',
+      'DTSTART:19701101T020000',
+      'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
+      'END:STANDARD',
+      'END:VTIMEZONE',
       'BEGIN:VEVENT',
-      `DTSTART:${formatICSDate(startDate)}`,
-      `DTEND:${formatICSDate(endDate)}`,
+      `DTSTART;TZID=America/New_York:${startFmt}`,
+      `DTEND;TZID=America/New_York:${endFmt}`,
       `SUMMARY:The Band Project at ${show.venue}`,
       `DESCRIPTION:${descriptionLine}`,
       `LOCATION:${locationLine}`,
