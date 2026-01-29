@@ -260,9 +260,15 @@ export default function ContactPage() {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 bg-red-900/20 border border-red-500/50"
+                className="p-4 bg-red-900/20 border border-red-500/50 space-y-2"
               >
                 <p className="text-red-400">There was an error submitting your message. Please try again.</p>
+                <p className="text-secondary text-sm">
+                  Or email us directly at{' '}
+                  <a href="mailto:book@thebandproject.live" className="text-white underline hover:no-underline">
+                    book@thebandproject.live
+                  </a>
+                </p>
               </motion.div>
             )}
           </motion.form>

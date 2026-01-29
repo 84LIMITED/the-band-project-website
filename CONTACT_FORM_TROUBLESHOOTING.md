@@ -4,6 +4,137 @@ Use this checklist to track down why messages sent to **book@thebandproject.live
 
 ---
 
+## ⚠️ "Could not load credentials from any providers" (CredentialsProviderError)
+
+If CloudWatch shows **CredentialsProviderError: Could not load credentials from any providers** (and "Error saving message", "Error sending email", "Error fetching shows"), the **backend has no AWS credentials**. The Amplify app’s **Service role** is either missing or not used by the serverless backend.
+
+### Fix: Use the SSR Compute role (not just the Service role)
+
+Amplify uses **two** roles:
+
+- **Service role** (App settings → General): used for **build/deploy** (CloudFormation, etc.). It does **not** run your API.
+- **Compute role** (App settings → IAM roles): used by the **Lambda that runs your Next.js API** at runtime. This is the one that needs DynamoDB and SES.
+
+The policy you have on **TheBandProjectWebsiteRole** is for the **Service** role (build/deploy). It has no `ses:SendEmail`/`ses:SendRawEmail` and no runtime DynamoDB (`PutItem`, `Query`, `GetItem`, `Scan`) for your API. So you must attach a **Compute role** that has those permissions.
+
+#### Step 1: Create a policy for the Compute role (DynamoDB + SES)
+
+1. **IAM** → **Policies** → **Create policy** → **JSON**.
+2. Paste this (adjust table names if different):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:*:*:table/the-band-project-shows",
+        "arn:aws:dynamodb:*:*:table/the-band-project-shows/index/*",
+        "arn:aws:dynamodb:*:*:table/the-band-project-messages"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+3. **Next** → name it e.g. **TBP-SSR-Compute-Policy** → **Create policy**.
+
+#### Step 2: Create the Compute role (trust Amplify)
+
+**Option A – AWS CLI (most reliable)**
+
+1. In your project folder, create a file named `trust.json` with **exactly** this (Principal as an array; some consoles require it):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": ["amplify.amazonaws.com"]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+2. In a terminal (same folder as `trust.json`), run:
+
+```bash
+aws iam create-role --role-name TBP-SSR-Compute-Role --assume-role-policy-document file://trust.json
+```
+
+3. Attach the policy (replace `YOUR_ACCOUNT_ID` with your 12-digit AWS account ID):
+
+```bash
+aws iam attach-role-policy --role-name TBP-SSR-Compute-Role --policy-arn arn:aws:iam::YOUR_ACCOUNT_ID:policy/TBP-SSR-Compute-Policy
+```
+
+To get your account ID: `aws sts get-caller-identity --query Account --output text`
+
+**Option B – IAM Console**
+
+1. **IAM** → **Roles** → **Create role**.
+2. **Trusted entity type:** Custom trust policy.
+3. **Custom trust policy** — paste **only** this. Ensure `Principal` is present and **Service** is an array (brackets `[ ]`):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": ["amplify.amazonaws.com"]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+4. **Next** → on **Add permissions**, do **not** attach any policy (leave the list empty). **Next** → name the role **TBP-SSR-Compute-Role** → **Create role**.  
+   - If the console won’t let you continue without a policy, attach **any** small AWS managed policy (e.g. **ReadOnlyAccess**), create the role, then in the next step remove it and attach **TBP-SSR-Compute-Policy** instead.
+5. After the role is created: open **TBP-SSR-Compute-Role** → **Add permissions** → **Attach policies** → search **TBP-SSR-Compute-Policy** → **Add permissions**.
+
+**If you still get “Has prohibited field Resource”:** create the role with the AWS CLI so only the trust policy is sent. Save the trust policy to a file (e.g. `trust.json`) with **only** the JSON above (no `Resource`). Then run (use your region if different):
+
+```bash
+aws iam create-role --role-name TBP-SSR-Compute-Role --assume-role-policy-document file://trust.json
+aws iam attach-role-policy --role-name TBP-SSR-Compute-Role --policy-arn arn:aws:iam::YOUR_ACCOUNT_ID:policy/TBP-SSR-Compute-Policy
+```
+
+Replace `YOUR_ACCOUNT_ID` with your 12-digit AWS account ID (IAM → top right, or run `aws sts get-caller-identity --query Account --output text`).
+
+#### Step 3: Attach the Compute role in Amplify
+
+1. **AWS Console** → **AWS Amplify** → your app (**the-band-project-website**).
+2. Left sidebar: **App settings** → **IAM roles** (not General).
+3. In **Compute role**, click **Edit**.
+4. Under **Default role**, select **TBP-SSR-Compute-Role** (or the role you created).
+5. **Save**.
+
+No redeploy needed — the Compute role is used on the next request. Submit the contact form again; credentials should work and the 503 should go away.
+
+---
+
 ## 1. Amazon SES
 
 ### 1.1 Verified identity (From address)

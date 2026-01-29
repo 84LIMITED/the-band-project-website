@@ -83,7 +83,7 @@ ${message.message}
       },
       Message: {
         Subject: {
-          Data: `New Contact Form Submission from ${message.name}`,
+          Data: 'New Booking Request for The Band Project',
         },
         Body: {
           Text: {
