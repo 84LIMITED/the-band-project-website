@@ -79,8 +79,16 @@ export async function POST(request: Request) {
     try {
       await sendContactEmail(contactMessage)
     } catch (error) {
-      console.error('Error sending email:', error)
-      // Still return success if email fails (message is saved)
+      // Log full error for CloudWatch (SES errors, IAM, etc.)
+      console.error('Contact form: SES send failed', {
+        error: error instanceof Error ? error.message : String(error),
+        name: error instanceof Error ? error.name : undefined,
+        code: (error as { code?: string })?.code,
+      })
+      return NextResponse.json(
+        { error: 'Failed to send email. Please try again or email us directly.' },
+        { status: 503 }
+      )
     }
 
     return NextResponse.json({ success: true }, { status: 200 })
