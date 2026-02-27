@@ -7,10 +7,27 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import { useMediaDrawer } from './MediaDrawerProvider'
 
+const showsSubmenu = [
+  { label: 'Upcoming Shows', href: '/shows' },
+  { label: 'Private Parties', href: '/private-parties' },
+  { label: 'Bars & Breweries', href: '/bars-breweries' },
+  { label: 'Festivals & Town Events', href: '/festivals-town-events' },
+]
+
+const topNavItems = [
+  { label: 'Background', href: '/background' },
+  { label: 'Setlist', href: '/setlist' },
+  { label: 'Videos', href: '/videos' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Gear Store', href: '/gear' },
+]
+
 export default function Header() {
   const { openDrawer } = useMediaDrawer()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isShowsOpen, setIsShowsOpen] = useState(false)
+  const [isShowsDropdownOpen, setIsShowsDropdownOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -21,18 +38,11 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navItems = [
-    { label: 'Background', href: '/background' },
-    { label: 'Shows', href: '/shows' },
-    { label: 'Private Parties', href: '/private-parties' },
-    { label: 'Bars & Breweries', href: '/bars-breweries' },
-    { label: 'Festivals & Town Events', href: '/festivals-town-events' },
-    { label: 'Setlist', href: '/setlist' },
-    { label: 'Videos', href: '/videos' },
-    { label: 'Contact', href: '/contact' },
-    { label: 'Gear Store', href: '/gear' },
-  ]
-
+  const isShowsActive =
+    pathname === '/shows' ||
+    pathname === '/private-parties' ||
+    pathname === '/bars-breweries' ||
+    pathname === '/festivals-town-events'
   const isActive = (href: string) => pathname === href
 
   return (
@@ -60,7 +70,63 @@ export default function Header() {
 
             {/* Center: Navigation Links */}
             <div className="flex items-center gap-8">
-              {navItems.map((item) => (
+              {/* Shows dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => setIsShowsDropdownOpen(true)}
+                onMouseLeave={() => setIsShowsDropdownOpen(false)}
+              >
+                <Link
+                  href="/shows"
+                  className="relative group text-sm uppercase tracking-wider inline-block"
+                >
+                  <span className={isShowsActive ? 'opacity-100' : 'opacity-70 group-hover:opacity-100 transition-opacity'}>
+                    Shows
+                  </span>
+                  {isShowsActive && (
+                    <motion.div
+                      className="absolute -bottom-1 left-0 right-0 h-px bg-white"
+                      layoutId="activeTab"
+                      initial={false}
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                  {!isShowsActive && (
+                    <motion.div
+                      className="absolute -bottom-1 left-0 right-0 h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left"
+                    />
+                  )}
+                </Link>
+                <svg className="inline-block w-3 h-3 ml-1 -mt-0.5 opacity-70" fill="currentColor" viewBox="0 0 20 20" aria-hidden>
+                  <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                </svg>
+                <AnimatePresence>
+                  {isShowsDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full left-0 pt-2 min-w-[200px]"
+                    >
+                      <div className="bg-black border border-white/20 py-2 shadow-xl">
+                        {showsSubmenu.map((item) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`block px-4 py-2 text-sm uppercase tracking-wider hover:bg-white/10 transition-colors ${
+                              isActive(item.href) ? 'text-white font-semibold' : 'text-white/80'
+                            }`}
+                          >
+                            {item.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              {topNavItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -166,7 +232,10 @@ export default function Header() {
               />
             </Link>
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => {
+                setIsMobileMenuOpen((prev) => !prev)
+                if (!isMobileMenuOpen) setIsShowsOpen(false)
+              }}
               className="flex flex-col gap-1.5 p-2"
               aria-label="Toggle menu"
               aria-expanded={isMobileMenuOpen}
@@ -207,14 +276,54 @@ export default function Header() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -20, opacity: 0 }}
               transition={{ delay: 0.1 }}
-              className="flex flex-col items-center justify-center h-full gap-8"
+              className="flex flex-col items-center justify-center h-full gap-6"
             >
-              {navItems.map((item, index) => (
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
+                <Link
+                  href="/background"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`text-2xl uppercase tracking-wider ${isActive('/background') ? 'opacity-100' : 'opacity-70'}`}
+                >
+                  Background
+                </Link>
+              </motion.div>
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }}>
+                <button
+                  type="button"
+                  onClick={() => setIsShowsOpen(!isShowsOpen)}
+                  className={`text-2xl uppercase tracking-wider ${isShowsActive ? 'opacity-100' : 'opacity-70'}`}
+                  aria-expanded={isShowsOpen}
+                >
+                  Shows
+                </button>
+                <AnimatePresence>
+                  {isShowsOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden flex flex-col items-center gap-4 mt-4 pl-4 border-l border-white/30"
+                    >
+                      {showsSubmenu.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => { setIsMobileMenuOpen(false); setIsShowsOpen(false) }}
+                          className={`text-xl uppercase tracking-wider ${isActive(item.href) ? 'opacity-100' : 'opacity-70'}`}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+              {topNavItems.map((item, index) => (
                 <motion.div
                   key={item.href}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 + index * 0.05 }}
+                  transition={{ delay: 0.1 + (index + 2) * 0.05 }}
                 >
                   <Link
                     href={item.href}
