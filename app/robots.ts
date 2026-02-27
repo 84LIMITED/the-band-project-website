@@ -8,7 +8,20 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/_next/'],
+        disallow: [
+          '/api/',
+          '/_next/',
+          // Legacy/old platform paths that no longer exist (improves crawl efficiency)
+          '/blogs/',
+          '/products/',
+          '/pages/',
+          '/collections/',
+          '/v1/',
+          '/cdn',
+          '/wpm',
+          '/b',
+          '/$', // e.g. /${t} or other malformed
+        ],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
