@@ -6,7 +6,7 @@ export default function BarsBreweriesPage() {
       <div className="container mx-auto max-w-3xl">
         {/* Hero */}
         <header className="mb-16">
-          <h1 className="text-4xl md:text-5xl font-black mb-6 uppercase">Live Band for Bars & Breweries in NJ</h1>
+          <h1 className="text-4xl md:text-5xl font-black mb-6 uppercase">The Band Project for Bars & Breweries in NJ</h1>
           <p className="text-xl text-secondary mb-4">
             High-energy covers. Strong crowd connection. Built for packed rooms.
           </p>

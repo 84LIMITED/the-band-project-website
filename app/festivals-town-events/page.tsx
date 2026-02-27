@@ -6,7 +6,7 @@ export default function FestivalsTownEventsPage() {
       <div className="container mx-auto max-w-3xl">
         {/* Hero */}
         <header className="mb-16">
-          <h1 className="text-4xl md:text-5xl font-black mb-6 uppercase">Live Band for Festivals & Town Events in Northern NJ</h1>
+          <h1 className="text-4xl md:text-5xl font-black mb-6 uppercase">The Band Project for Festivals & Town Events in Northern NJ</h1>
           <p className="text-xl text-secondary mb-4">
             Broad appeal. Professional execution. A show that brings the community together.
           </p>

@@ -7,7 +7,7 @@ export default function PrivatePartiesPage() {
       <div className="container mx-auto max-w-3xl">
         {/* Hero */}
         <header className="mb-16">
-          <h1 className="text-4xl md:text-5xl font-black mb-6 uppercase">Live Band for Private Parties in Northern NJ</h1>
+          <h1 className="text-4xl md:text-5xl font-black mb-6 uppercase">The Band Project for Private Parties in Northern NJ</h1>
           <p className="text-xl text-secondary mb-4">
             Make it feel like a real night out—at your house, your venue, or your backyard.
           </p>

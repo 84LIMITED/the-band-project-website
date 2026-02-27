@@ -277,6 +277,7 @@ export default function Header() {
               exit={{ y: -20, opacity: 0 }}
               transition={{ delay: 0.1 }}
               className="flex flex-col items-center justify-center h-full gap-6"
+              onClick={(e) => e.stopPropagation()}
             >
               <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
                 <Link
@@ -287,38 +288,31 @@ export default function Header() {
                   Background
                 </Link>
               </motion.div>
-              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }}>
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="flex flex-col items-center">
                 <button
                   type="button"
-                  onClick={() => setIsShowsOpen(!isShowsOpen)}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsShowsOpen((prev) => !prev) }}
                   className={`text-2xl uppercase tracking-wider ${isShowsActive ? 'opacity-100' : 'opacity-70'}`}
                   aria-expanded={isShowsOpen}
                 >
                   Shows
                 </button>
-                <AnimatePresence>
-                  {isShowsOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden flex flex-col items-center gap-4 mt-4 pl-4 border-l border-white/30"
-                    >
-                      {showsSubmenu.map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => { setIsMobileMenuOpen(false); setIsShowsOpen(false) }}
-                          className={`text-xl uppercase tracking-wider ${isActive(item.href) ? 'opacity-100' : 'opacity-70'}`}
-                        >
-                          {item.label}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {isShowsOpen && (
+                  <div className="flex flex-col items-center gap-4 mt-4 pl-4 border-l border-white/30">
+                    {showsSubmenu.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => { setIsMobileMenuOpen(false); setIsShowsOpen(false) }}
+                        className={`text-xl uppercase tracking-wider ${isActive(item.href) ? 'opacity-100' : 'opacity-70'}`}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </motion.div>
-              {topNavItems.map((item, index) => (
+              {topNavItems.filter((item) => item.href !== '/background').map((item, index) => (
                 <motion.div
                   key={item.href}
                   initial={{ y: 20, opacity: 0 }}
