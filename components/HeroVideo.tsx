@@ -11,6 +11,8 @@ interface HeroVideoProps {
   title: string
   tagline: string
   logoSrc?: string // Optional logo image to replace title text
+  /** Single H1 for SEO when using logo (not rendered as visible heading) */
+  seoH1?: string
   onWatchClick?: () => void
   onShowsClick?: () => void
 }
@@ -22,6 +24,7 @@ export default function HeroVideo({
   title,
   tagline,
   logoSrc,
+  seoH1,
   onWatchClick,
   onShowsClick,
 }: HeroVideoProps) {
@@ -86,6 +89,7 @@ export default function HeroVideo({
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-4xl"
         >
+          {seoH1 && <h1 className="sr-only">{seoH1}</h1>}
           {logoSrc ? (
             <div className="mb-6">
               <Image
@@ -99,9 +103,9 @@ export default function HeroVideo({
               />
             </div>
           ) : (
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight uppercase">
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight uppercase">
               {title}
-            </h1>
+            </h2>
           )}
           <p className="text-xl md:text-2xl text-secondary mb-12 font-extrabold uppercase">
             {tagline}

@@ -24,6 +24,11 @@ export default function Header() {
   const navItems = [
     { label: 'Background', href: '/background' },
     { label: 'Shows', href: '/shows' },
+    { label: 'Private Parties', href: '/private-parties' },
+    { label: 'Bars & Breweries', href: '/bars-breweries' },
+    { label: 'Festivals & Town Events', href: '/festivals-town-events' },
+    { label: 'Setlist', href: '/setlist' },
+    { label: 'Videos', href: '/videos' },
     { label: 'Contact', href: '/contact' },
     { label: 'Gear Store', href: '/gear' },
   ]

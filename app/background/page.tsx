@@ -4,15 +4,15 @@ import { generateMetadata as genMetadata, generateStructuredData } from '@/lib/s
 import { Metadata } from 'next'
 
 export const metadata: Metadata = genMetadata({
-  title: 'Background | The Band Project',
-  description: 'Learn about The Band Project - our origin story, musical influences, and live performance style.',
+  title: 'About The Band Project | Wyckoff NJ Live Band',
+  description: 'Meet The Band Project—Wyckoff, NJ-based live band blending timeless covers and original music. Our story, sound, and what to expect live.',
   path: '/background',
 })
 
 export default function BackgroundPage() {
   const pageData = generateStructuredData('WebPage', {
-    name: 'Background | The Band Project',
-    description: 'Learn about The Band Project - our origin story, musical influences, and live performance style.',
+    name: 'About The Band Project | Wyckoff NJ Live Band',
+    description: 'Meet The Band Project—Wyckoff, NJ-based live band blending timeless covers and original music. Our story, sound, and what to expect live.',
     path: '/background',
   })
 
@@ -40,7 +40,7 @@ What started as a shared love of live music and performance evolved into a band 
         <div className="container mx-auto max-w-4xl">
           {/* Hero Section */}
           <header className="mb-16">
-            <h1 className="text-5xl md:text-6xl font-black mb-6 uppercase">Background</h1>
+            <h1 className="text-5xl md:text-6xl font-black mb-6 uppercase">About The Band Project (Wyckoff, NJ)</h1>
             <p className="text-xl text-secondary">
               Our story, sound, and what drives our group.
             </p>

@@ -68,8 +68,8 @@ export default function ContactPage() {
   }
 
   const pageData = generateStructuredData('WebPage', {
-    name: 'Contact | The Band Project',
-    description: 'Contact The Band Project for booking inquiries and general information.',
+    name: 'Book The Band Project | NJ Live Band Booking',
+    description: 'Request a quote to book The Band Project for your venue or event in NJ/NY/CT. Share date, venue/city, and details—fast response.',
     path: '/contact',
   })
 
@@ -83,12 +83,9 @@ export default function ContactPage() {
 
       {/* LLM-Friendly Summary Block */}
       <section className="sr-only">
-        <h2>Contact The Band Project</h2>
+        <h2>Book The Band Project</h2>
         <p>
-          To book The Band Project for your event or venue, use our contact form. We accept
-          booking inquiries for performances in the greater New York Tri-State area (New York, New Jersey, and Connecticut). Include your name, email,
-          organization, event date, venue location, and message details. We respond to all
-          inquiries promptly.
+          Request a quote to book The Band Project for your venue or event in NJ, NY, or CT. Share your date, venue or city, and event details for a fast response.
         </p>
       </section>
 
@@ -96,9 +93,9 @@ export default function ContactPage() {
         <div className="container mx-auto max-w-2xl">
           {/* Header */}
           <header className="mb-12">
-            <h1 className="text-5xl md:text-6xl font-black mb-6 uppercase">Contact</h1>
+            <h1 className="text-5xl md:text-6xl font-black mb-6 uppercase">Book The Band Project</h1>
             <p className="text-xl text-secondary">
-              Booking inquiries and general information
+              Request a quote for your venue or event—we respond promptly.
             </p>
           </header>
 
@@ -242,7 +239,7 @@ export default function ContactPage() {
               disabled={isSubmitting}
               className="w-full md:w-auto px-8 py-4 bg-white text-black font-medium uppercase tracking-wider text-sm hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Submitting...' : 'Submit'}
+              {isSubmitting ? 'Sending...' : 'Request a Quote'}
             </button>
 
             {/* Status Messages */}

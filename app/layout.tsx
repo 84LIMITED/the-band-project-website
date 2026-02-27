@@ -14,9 +14,9 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: 'The Band Project | Live Music Entertainment',
-  description: 'The Band Project is a high-energy live band based in Northern New Jersey, performing across Bergen County, Hoboken, Wyckoff, Mahwah, Hawthorne, Ridgewood, Paramus, Manhattan, and the New York tri-state area. Frequently booked for town festivals, summer concert series, breweries, restaurants, private events, and corporate entertainment.',
-  keywords: ['band', 'live music', 'entertainment', 'concerts', 'shows'],
+  title: 'The Band Project | NJ Cover Band for Bars, Parties & Local Events',
+  description: 'High-energy live band based in Wyckoff, NJ. Available for private parties, festivals, bars & local events across Bergen County and the NYC tri-state area. Book now.',
+  keywords: ['band', 'live music', 'NJ cover band', 'private party band', 'bar band', 'Bergen County'],
   authors: [{ name: 'The Band Project' }],
   icons: {
     icon: '/images/favicon.png',
@@ -24,15 +24,15 @@ export const metadata: Metadata = {
     apple: '/images/favicon.png',
   },
   openGraph: {
-    title: 'The Band Project | Live Music Entertainment',
-    description: 'The Band Project is a high-energy live band based in Northern New Jersey, performing across Bergen County, Hoboken, Wyckoff, Mahwah, Hawthorne, Ridgewood, Paramus, Manhattan, and the New York tri-state area. Frequently booked for town festivals, summer concert series, breweries, restaurants, private events, and corporate entertainment.',
+    title: 'The Band Project | NJ Cover Band for Bars, Parties & Local Events',
+    description: 'High-energy live band based in Wyckoff, NJ. Available for private parties, festivals, bars & local events across Bergen County and the NYC tri-state area. Book now.',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The Band Project | Live Music Entertainment',
-    description: 'The Band Project is a high-energy live band based in Northern New Jersey, performing across Bergen County, Hoboken, Wyckoff, Mahwah, Hawthorne, Ridgewood, Paramus, Manhattan, and the New York tri-state area. Frequently booked for town festivals, summer concert series, breweries, restaurants, private events, and corporate entertainment.',
+    title: 'The Band Project | NJ Cover Band for Bars, Parties & Local Events',
+    description: 'High-energy live band based in Wyckoff, NJ. Available for private parties, festivals, bars & local events across Bergen County and the NYC tri-state area. Book now.',
   },
   robots: {
     index: true,

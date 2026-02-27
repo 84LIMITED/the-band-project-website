@@ -47,6 +47,31 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
+                  <a href="/private-parties" className="hover:text-white transition-colors">
+                    Private Parties
+                  </a>
+                </li>
+                <li>
+                  <a href="/bars-breweries" className="hover:text-white transition-colors">
+                    Bars & Breweries
+                  </a>
+                </li>
+                <li>
+                  <a href="/festivals-town-events" className="hover:text-white transition-colors">
+                    Festivals & Town Events
+                  </a>
+                </li>
+                <li>
+                  <a href="/setlist" className="hover:text-white transition-colors">
+                    Setlist
+                  </a>
+                </li>
+                <li>
+                  <a href="/videos" className="hover:text-white transition-colors">
+                    Videos
+                  </a>
+                </li>
+                <li>
                   <a href="/contact" className="hover:text-white transition-colors">
                     Contact
                   </a>

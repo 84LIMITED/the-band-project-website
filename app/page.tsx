@@ -84,6 +84,7 @@ export default function HomePage() {
         title="The Band Project"
         tagline="Timeless Covers. Original Music. Always a Party."
         logoSrc="/images/hero-logo.png"
+        seoH1="NJ Live Band for Bars, Parties & Local Events"
         onWatchClick={openDrawer}
         onShowsClick={() => router.push('/shows')}
       />
@@ -166,21 +167,38 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Band Summary */}
+      {/* Band Summary + contextual links to acquisition pages */}
       <section className="py-24 px-4 md:px-6 lg:px-8">
         <div className="container mx-auto max-w-4xl">
           <div className="grid grid-cols-4 md:grid-cols-12 gap-8">
             <div className="col-span-4 md:col-span-8">
               <h2 className="text-4xl md:text-5xl font-extrabold mb-6 uppercase">The Band Project</h2>
               <p className="text-lg text-secondary leading-relaxed mb-6">
-              Blending timeless covers with original music, The Band Project creates a live entertainment experience that transforms any night into a party—playing venues and festivals across the tri-state area..
+                Blending timeless covers with original music, The Band Project creates a live entertainment experience that transforms any night into a party—playing venues and festivals across the tri-state area.
               </p>
-              <Link
-                href="/background"
-                className="inline-block text-sm uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors"
-              >
-                Learn More About Us
-              </Link>
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <Link href="/background" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  About us
+                </Link>
+                <Link href="/private-parties" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Private parties
+                </Link>
+                <Link href="/bars-breweries" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Bars & breweries
+                </Link>
+                <Link href="/festivals-town-events" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Festivals & town events
+                </Link>
+                <Link href="/setlist" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Setlist
+                </Link>
+                <Link href="/videos" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Videos
+                </Link>
+                <Link href="/contact" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Book us
+                </Link>
+              </div>
             </div>
           </div>
         </div>
