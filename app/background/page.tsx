@@ -1,6 +1,6 @@
 import Script from 'next/script'
 import Image from 'next/image'
-import { generateMetadata as genMetadata, generateStructuredData } from '@/lib/seo'
+import { generateMetadata as genMetadata, generateStructuredData, IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = genMetadata({
@@ -150,7 +150,7 @@ We believe live music should create connection, community, and love—-and we br
                 >
                   <Image
                     src={`/images/gallery-${i}.png`}
-                    alt={`The Band Project gallery image ${i}`}
+                    alt={IMAGE_VIDEO_ALT_TITLE}
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
                   />

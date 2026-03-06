@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 import HeroVideo from '@/components/HeroVideo'
 import ShowCard from '@/components/ShowCard'
 import { useMediaDrawer } from '@/components/MediaDrawerProvider'
-import { generateStructuredData } from '@/lib/seo'
+import { generateStructuredData, IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
 import { Show, MediaItem } from '@/lib/schema'
 import showsData from '@/content/shows.json'
 import mediaData from '@/content/media.json'
@@ -138,7 +138,7 @@ export default function HomePage() {
                       <div className="relative aspect-video mb-4 overflow-hidden">
                         <Image
                           src={item.thumbnail}
-                          alt={item.title}
+                          alt={IMAGE_VIDEO_ALT_TITLE}
                           fill
                           className="object-cover hover:scale-105 transition-transform duration-300"
                         />

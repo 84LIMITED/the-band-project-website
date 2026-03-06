@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import { useMediaDrawer } from './MediaDrawerProvider'
+import { IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
 
 const showsSubmenu = [
   { label: 'Upcoming Shows', href: '/shows' },
@@ -59,7 +60,7 @@ export default function Header() {
             <Link href="/" className="hover:opacity-80 transition-opacity">
               <Image
                 src="/images/the-band-project-logo.png"
-                alt="The Band Project"
+                alt={IMAGE_VIDEO_ALT_TITLE}
                 width={250}
                 height={75}
                 priority
@@ -223,7 +224,7 @@ export default function Header() {
             <Link href="/" className="hover:opacity-80 transition-opacity">
               <Image
                 src="/images/the-band-project-logo.png"
-                alt="The Band Project"
+                alt={IMAGE_VIDEO_ALT_TITLE}
                 width={150}
                 height={45}
                 priority

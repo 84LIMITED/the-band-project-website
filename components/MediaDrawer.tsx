@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MediaItem } from '@/lib/schema'
+import { IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
 
 interface MediaDrawerProps {
   isOpen: boolean
@@ -91,6 +92,7 @@ export default function MediaDrawer({ isOpen, onClose, mediaItems }: MediaDrawer
                         controls
                         poster={item.thumbnail}
                         preload="metadata"
+                        title={IMAGE_VIDEO_ALT_TITLE}
                       >
                         <source src={item.url} type="video/mp4" />
                         Your browser does not support the video tag.
@@ -99,7 +101,7 @@ export default function MediaDrawer({ isOpen, onClose, mediaItems }: MediaDrawer
                       <div className="relative w-full aspect-video">
                         <Image
                           src={item.url}
-                          alt={item.description || item.title}
+                          alt={IMAGE_VIDEO_ALT_TITLE}
                           fill
                           className="object-contain"
                         />

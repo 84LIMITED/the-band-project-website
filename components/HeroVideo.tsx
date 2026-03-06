@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
 
 interface HeroVideoProps {
   videoSrc: string
@@ -74,6 +75,7 @@ export default function HeroVideo({
         loop
         autoPlay
         onLoadedData={() => setIsLoaded(true)}
+        title={IMAGE_VIDEO_ALT_TITLE}
       >
         Your browser does not support the video tag.
       </video>
@@ -94,7 +96,7 @@ export default function HeroVideo({
             <div className="mb-6">
               <Image
                 src={logoSrc}
-                alt={title}
+                alt={IMAGE_VIDEO_ALT_TITLE}
                 width={1200}
                 height={360}
                 priority

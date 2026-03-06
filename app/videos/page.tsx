@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import mediaData from '@/content/media.json'
 import { MediaItem } from '@/lib/schema'
+import { IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
 
 export default function VideosPage() {
   const videos = (mediaData as MediaItem[]).filter((m) => m.type === 'video')
@@ -25,6 +26,7 @@ export default function VideosPage() {
                   controls
                   className="w-full h-full object-contain"
                   preload="metadata"
+                  title={IMAGE_VIDEO_ALT_TITLE}
                 >
                   Your browser does not support the video tag.
                 </video>

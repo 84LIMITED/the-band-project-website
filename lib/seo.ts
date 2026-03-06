@@ -1,5 +1,8 @@
 import { Metadata } from 'next'
 
+/** Used for image alt text and video title attributes for SEO consistency */
+export const IMAGE_VIDEO_ALT_TITLE = 'The Band Project | NJ | Live Music Entertainment'
+
 export interface PageSEO {
   title: string
   description: string
