@@ -60,6 +60,7 @@ export default function RootLayout({
     sameAs: [
       'https://www.instagram.com/thebandprojectnj/',
       'https://www.facebook.com/people/The-Band-Project/61584822961295/',
+      'https://www.youtube.com/@thebandprojectnj',
     ],
     location: {
       '@type': 'Place',
@@ -129,6 +130,7 @@ export default function RootLayout({
     sameAs: [
       'https://www.instagram.com/thebandprojectnj/',
       'https://www.facebook.com/people/The-Band-Project/61584822961295/',
+      'https://www.youtube.com/@thebandprojectnj',
     ],
     contactPoint: [
       {
