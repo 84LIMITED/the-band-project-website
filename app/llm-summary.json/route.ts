@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getUpcomingShows } from '@/lib/aws'
 import showsData from '@/content/shows.json'
+import { filterUpcomingShowsByDate } from '@/lib/shows'
 import { Show } from '@/lib/schema'
 
 export async function GET(request: Request) {
@@ -8,14 +9,18 @@ export async function GET(request: Request) {
     new URL(request.url).origin
 
   try {
-    // Fetch upcoming shows
     let shows: Show[] = []
     try {
       shows = await getUpcomingShows()
     } catch (error) {
-      console.error('DynamoDB fetch failed, using static data:', error)
-      shows = (showsData as Show[]).filter((show) => show.isUpcoming)
+      console.error('DynamoDB fetch failed:', error)
     }
+
+    if (shows.length === 0) {
+      shows = showsData as Show[]
+    }
+
+    shows = filterUpcomingShowsByDate(shows)
 
     // Format shows for LLM consumption
     const formattedShows = shows.map((show) => ({

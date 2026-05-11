@@ -11,16 +11,20 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/api/',
           '/_next/',
-          // Legacy/old platform paths that no longer exist (improves crawl efficiency)
+          // Legacy Shopify-style paths (this site is not Shopify). Keep these specific —
+          // never use a short prefix like /b (that blocks /background, /bars-breweries, etc.).
           '/blogs/',
           '/products/',
           '/pages/',
           '/collections/',
+          '/cart',
+          '/checkout',
+          '/checkouts/',
+          '/account',
+          '/orders/',
           '/v1/',
-          '/cdn',
+          '/cdn/',
           '/wpm',
-          '/b',
-          '/$', // e.g. /${t} or other malformed
         ],
       },
     ],

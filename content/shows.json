@@ -1,16 +1,5 @@
 [
   {
-    "id": "show-1",
-    "date": "2026-05-09",
-    "venue": "Mason Jar",
-    "city": "Mahwah",
-    "state": "NJ",
-    "address": "219 Ramapo Valley Road, Mahwah, NJ 07430",
-    "time": "8:00 PM – 11:00 PM",
-    "doors": "8:00 PM",
-    "isUpcoming": true
-  },
-  {
     "id": "show-2",
     "date": "2026-06-27",
     "venue": "Wyckoff Memorial Field",

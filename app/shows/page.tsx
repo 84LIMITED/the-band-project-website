@@ -5,11 +5,11 @@ import Script from 'next/script'
 import { motion } from 'framer-motion'
 import ShowCard from '@/components/ShowCard'
 import { generateStructuredData } from '@/lib/seo'
+import { filterUpcomingShowsByDate } from '@/lib/shows'
 import { Show } from '@/lib/schema'
 import showsData from '@/content/shows.json'
 
-// To update show dates/locations: edit content/shows.json (not this file).
-// Use date format YYYY-MM-DD (e.g. "2026-05-09" for May 9). Display is in components/ShowCard.tsx.
+// Edit content/shows.json for dates/locations. Use YYYY-MM-DD. Past dates (Eastern) are hidden automatically.
 
 export default function ShowsPage() {
   const [shows, setShows] = useState<Show[]>([])
@@ -24,15 +24,11 @@ export default function ShowsPage() {
           const data = await response.json()
           setShows(data)
         } else {
-          // Fallback to static data
-          const allShows = showsData as Show[]
-          setShows(allShows.filter((show) => show.isUpcoming))
+          setShows(filterUpcomingShowsByDate(showsData as Show[]))
         }
       } catch (error) {
         console.error('Error fetching shows:', error)
-        // Fallback to static data
-        const allShows = showsData as Show[]
-        setShows(allShows.filter((show) => show.isUpcoming))
+        setShows(filterUpcomingShowsByDate(showsData as Show[]))
       } finally {
         setIsLoading(false)
       }

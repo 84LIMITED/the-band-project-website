@@ -9,6 +9,7 @@ import HeroVideo from '@/components/HeroVideo'
 import ShowCard from '@/components/ShowCard'
 import { useMediaDrawer } from '@/components/MediaDrawerProvider'
 import { generateStructuredData, IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
+import { filterUpcomingShowsByDate } from '@/lib/shows'
 import { Show, MediaItem } from '@/lib/schema'
 import showsData from '@/content/shows.json'
 import mediaData from '@/content/media.json'
@@ -17,7 +18,7 @@ export default function HomePage() {
   const router = useRouter()
   const { openDrawer } = useMediaDrawer()
 
-  const upcomingShows = (showsData as Show[]).filter((show) => show.isUpcoming).slice(0, 3)
+  const upcomingShows = filterUpcomingShowsByDate(showsData as Show[]).slice(0, 3)
   const mediaItems = mediaData as MediaItem[]
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
