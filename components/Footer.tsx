@@ -6,16 +6,7 @@ export default function Footer() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thebandproject.live'
   const currentYear = new Date().getFullYear()
 
-  const websiteStructuredData = generateStructuredData('WebSite', {
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${baseUrl}/search?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
-  })
+  const websiteStructuredData = generateStructuredData('WebSite', {})
 
   return (
     <>
