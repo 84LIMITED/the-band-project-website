@@ -11,6 +11,16 @@
     "isUpcoming": true
   },
   {
+    "id": "show-4",
+    "date": "2026-10-17",
+    "venue": "Hansil's Bar & Grill",
+    "city": "Oakland",
+    "state": "NJ",
+    "address": "7 Ramapo Valley Rd, Oakland, NJ 07436",
+    "time": "8:00 PM – 11:00 PM",
+    "isUpcoming": true
+  },
+  {
     "id": "show-3",
     "date": "2027-01-09",
     "venue": "Shortways Barn",
