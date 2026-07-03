@@ -30,5 +30,21 @@
     "url": "/video/highlights-4.mp4",
     "thumbnail": "/images/highlights-4-thumb.png",
     "description": "Clips from Shortways Barn"
+  },
+  {
+    "id": "media-5",
+    "title": "Wyckoff Centennial Highlights — Part 1",
+    "type": "video",
+    "url": "/video/highlights-5.mp4",
+    "thumbnail": "/images/highlights-5.jpg",
+    "description": "Live Performance Highlights from the Wyckoff Centennial on June 27, 2026. Clips from the 100 year anniversary celebration of Wyckoff at Memorial Field."
+  },
+  {
+    "id": "media-6",
+    "title": "Wyckoff Centennial Highlights — Part 2",
+    "type": "video",
+    "url": "/video/highlights-6.mp4",
+    "thumbnail": "/images/highlights-6.jpg",
+    "description": "Live Performance Highlights from the Wyckoff Centennial on June 27, 2026. Clips from the 100 year anniversary celebration of Wyckoff at Memorial Field."
   }
 ]
