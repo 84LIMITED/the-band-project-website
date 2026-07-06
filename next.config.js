@@ -6,6 +6,11 @@ const nextConfig = {
   },
   // Enable static export if using S3 + CloudFront
   // output: 'export',
+  async rewrites() {
+    return [
+      { source: '/setlist-vote', destination: '/setlist-vote.html' },
+    ]
+  },
 }
 
 module.exports = nextConfig
