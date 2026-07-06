@@ -62,7 +62,17 @@ type Ballot = {
 
 function checkAuth(req: NextRequest): boolean {
   const key = req.headers.get('x-ballot-key');
-  return !!key && key === process.env.BALLOT_ACCESS_KEY;
+  const expected = process.env.BALLOT_ACCESS_KEY;
+  // TEMPORARY DEBUG — remove once the 401 is resolved. Logs lengths and a
+  // match result only, never the actual header or env var values.
+  console.log('[ballots-auth-debug]', {
+    headerPresent: key !== null,
+    headerLength: key ? key.length : 0,
+    envPresent: expected !== undefined,
+    envLength: expected ? expected.length : 0,
+    isMatch: !!key && key === expected,
+  });
+  return !!key && key === expected;
 }
 
 function slugify(input: string): string {
