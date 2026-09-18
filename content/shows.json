@@ -11,6 +11,16 @@
     "isUpcoming": true
   },
   {
+    "id": "show-5",
+    "date": "2026-10-16",
+    "venue": "EMS Fall Festival at Eisenhower Middle School",
+    "city": "Wyckoff",
+    "state": "NJ",
+    "address": "Dwight D. Eisenhower Middle School, 344 Calvin Court, Wyckoff, NJ 07481",
+    "time": "7:00 PM – 9:00 PM",
+    "isUpcoming": true
+  },
+  {
     "id": "show-4",
     "date": "2026-10-17",
     "venue": "Hansil's Bar & Grill",
