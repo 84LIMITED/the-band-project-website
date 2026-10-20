@@ -209,7 +209,7 @@ export default function Header() {
                 </a>
               </div>
               <button
-                onClick={openDrawer}
+                onClick={() => openDrawer()}
                 className="flex items-center gap-2 text-sm uppercase tracking-wider opacity-70 hover:opacity-100 transition-opacity"
                 aria-label="Watch media"
               >

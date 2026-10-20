@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MediaItem } from '@/lib/schema'
 import { IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
+import HighlightVideo from '@/components/HighlightVideo'
 
 interface MediaDrawerProps {
   isOpen: boolean
@@ -87,16 +88,15 @@ export default function MediaDrawer({ isOpen, onClose, mediaItems }: MediaDrawer
                 {mediaItems.map((item) => (
                   <div key={item.id} className="space-y-4">
                     {item.type === 'video' ? (
-                      <video
-                        className="w-full"
-                        controls
-                        poster={item.thumbnail}
-                        preload="metadata"
-                        title={IMAGE_VIDEO_ALT_TITLE}
+                      <div
+                        className={
+                          item.orientation === 'vertical'
+                            ? 'flex justify-center bg-black'
+                            : 'bg-black'
+                        }
                       >
-                        <source src={item.url} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
+                        <HighlightVideo item={item} />
+                      </div>
                     ) : (
                       <div className="relative w-full aspect-video">
                         <Image

@@ -29,4 +29,10 @@ export interface MediaItem {
   url: string
   thumbnail?: string
   description?: string
+  orientation?: 'vertical' | 'landscape'
+  showId?: string
+  venue?: string
+  city?: string
+  state?: string
+  date?: string
 }

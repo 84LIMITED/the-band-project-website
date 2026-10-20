@@ -86,7 +86,7 @@ export default function HomePage() {
         tagline="Timeless Covers. Original Music. Always a Party."
         logoSrc="/images/hero-logo.png"
         seoH1="NJ Live Band for Bars, Parties & Local Events"
-        onWatchClick={openDrawer}
+        onWatchClick={() => openDrawer()}
         onShowsClick={() => router.push('/shows')}
       />
 
@@ -125,18 +125,20 @@ export default function HomePage() {
             <h2 className="text-4xl md:text-5xl font-extrabold mb-12 uppercase">Highlights</h2>
             <div className="overflow-x-auto">
               <div className="flex gap-6 pb-4">
-                {mediaItems.map((item, index) => (
-                  <motion.div
+                {mediaItems.map((item, index) => {
+                  const vertical = item.orientation === 'vertical'
+                  return (
+                    <motion.div
                     key={item.id}
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
-                    className="flex-shrink-0 w-[300px] md:w-[400px] cursor-pointer"
-                    onClick={openDrawer}
+                    className={`flex-shrink-0 cursor-pointer ${vertical ? 'w-[200px] md:w-[240px]' : 'w-[300px] md:w-[400px]'}`}
+                    onClick={() => openDrawer()}
                   >
                     {item.thumbnail && (
-                      <div className="relative aspect-video mb-4 overflow-hidden">
+                      <div className={`relative mb-4 overflow-hidden bg-black ${vertical ? 'aspect-[9/16]' : 'aspect-video'}`}>
                         <Image
                           src={item.thumbnail}
                           alt={IMAGE_VIDEO_ALT_TITLE}
@@ -161,7 +163,8 @@ export default function HomePage() {
                       <p className="text-sm text-secondary">{item.description}</p>
                     )}
                   </motion.div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </div>

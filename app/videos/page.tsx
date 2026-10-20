@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import mediaData from '@/content/media.json'
 import { MediaItem } from '@/lib/schema'
-import { IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
+import HighlightVideo from '@/components/HighlightVideo'
 
 export default function VideosPage() {
   const videos = (mediaData as MediaItem[]).filter((m) => m.type === 'video')
@@ -19,17 +19,14 @@ export default function VideosPage() {
         <section className="space-y-12 mb-16">
           {videos.map((item) => (
             <article key={item.id} className="border border-white/20 p-6">
-              <div className="aspect-video relative bg-black mb-4">
-                <video
-                  src={item.url}
-                  poster={item.thumbnail}
-                  controls
-                  className="w-full h-full object-contain"
-                  preload="metadata"
-                  title={IMAGE_VIDEO_ALT_TITLE}
-                >
-                  Your browser does not support the video tag.
-                </video>
+              <div
+                className={
+                  item.orientation === 'vertical'
+                    ? 'mb-4 flex justify-center bg-black'
+                    : 'mb-4 bg-black'
+                }
+              >
+                <HighlightVideo item={item} />
               </div>
               <h2 className="text-xl font-bold mb-2">{item.title}</h2>
               <p className="text-secondary text-sm">

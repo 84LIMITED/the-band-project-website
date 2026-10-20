@@ -6,7 +6,7 @@ import { MediaItem } from '@/lib/schema'
 import mediaData from '@/content/media.json'
 
 interface MediaDrawerContextType {
-  openDrawer: () => void
+  openDrawer: (showId?: string) => void
   closeDrawer: () => void
   isOpen: boolean
 }
@@ -23,10 +23,20 @@ export function useMediaDrawer() {
 
 export function MediaDrawerProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [activeShowId, setActiveShowId] = useState<string | null>(null)
   const mediaItems = mediaData as MediaItem[]
 
-  const openDrawer = () => setIsOpen(true)
+  const openDrawer = (showId?: string) => {
+    setActiveShowId(typeof showId === 'string' ? showId : null)
+    setIsOpen(true)
+  }
   const closeDrawer = () => setIsOpen(false)
+
+  const showItems =
+    activeShowId == null
+      ? mediaItems
+      : mediaItems.filter((item) => item.showId === activeShowId)
+  const visibleItems = showItems.length > 0 ? showItems : mediaItems
 
   return (
     <MediaDrawerContext.Provider value={{ openDrawer, closeDrawer, isOpen }}>
@@ -34,7 +44,7 @@ export function MediaDrawerProvider({ children }: { children: ReactNode }) {
       <MediaDrawer
         isOpen={isOpen}
         onClose={closeDrawer}
-        mediaItems={mediaItems}
+        mediaItems={visibleItems}
       />
     </MediaDrawerContext.Provider>
   )
