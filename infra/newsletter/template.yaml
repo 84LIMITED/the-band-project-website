@@ -1,0 +1,154 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Fan list table, SES newsletter events, and reputation alarms for The Band Project.
+
+Parameters:
+  AlertEmail:
+    Type: String
+    Default: book@thebandproject.live
+    Description: Address that confirms the bounce and complaint alarm subscription.
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 30
+    MemorySize: 128
+
+Resources:
+  SubscribersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: band-project-subscribers
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+
+  NewsletterConfigurationSet:
+    Type: AWS::SES::ConfigurationSet
+    Properties:
+      Name: band-project-newsletter
+
+  SesEventsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: band-project-ses-events
+
+  SesEventsTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !Ref SesEventsTopic
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ses.amazonaws.com
+            Action: sns:Publish
+            Resource: !Ref SesEventsTopic
+            Condition:
+              StringEquals:
+                AWS:SourceAccount: !Ref AWS::AccountId
+
+  NewsletterAlertsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: band-project-newsletter-alerts
+
+  AlertEmailSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: email
+      TopicArn: !Ref NewsletterAlertsTopic
+      Endpoint: !Ref AlertEmail
+
+  SesEventDestination:
+    Type: AWS::SES::ConfigurationSetEventDestination
+    Properties:
+      ConfigurationSetName: !Ref NewsletterConfigurationSet
+      EventDestination:
+        Name: bounces-and-complaints
+        Enabled: true
+        MatchingEventTypes:
+          - bounce
+          - complaint
+        SNSDestination:
+          TopicARN: !Ref SesEventsTopic
+
+  SesEventHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: band-project-ses-events
+      CodeUri: handler/
+      Handler: app.handler
+      Environment:
+        Variables:
+          SUBSCRIBERS_TABLE: !Ref SubscribersTable
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:UpdateItem
+              Resource: !GetAtt SubscribersTable.Arn
+      Events:
+        SesEvents:
+          Type: SNS
+          Properties:
+            Topic: !Ref SesEventsTopic
+
+  BounceRateAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: band-project-ses-bounce-rate
+      AlarmDescription: SES account bounce rate is at or above 3 percent.
+      Namespace: AWS/SES
+      MetricName: Reputation.BounceRate
+      Statistic: Average
+      Period: 3600
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0.03
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref NewsletterAlertsTopic
+
+  ComplaintRateAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: band-project-ses-complaint-rate
+      AlarmDescription: SES account complaint rate is at or above 0.1 percent.
+      Namespace: AWS/SES
+      MetricName: Reputation.ComplaintRate
+      Statistic: Average
+      Period: 3600
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 0.001
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref NewsletterAlertsTopic
+
+Outputs:
+  SubscribersTableName:
+    Description: DynamoDB table for fan list subscribers
+    Value: !Ref SubscribersTable
+  SubscribersTableArn:
+    Description: ARN of the subscribers table
+    Value: !GetAtt SubscribersTable.Arn
+  ConfigurationSetName:
+    Description: SES configuration set used by newsletter sends
+    Value: !Ref NewsletterConfigurationSet
+  AlertsTopicArn:
+    Description: SNS topic for bounce and complaint alarms
+    Value: !Ref NewsletterAlertsTopic

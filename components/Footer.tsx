@@ -1,5 +1,6 @@
 import Script from 'next/script'
 import { generateStructuredData } from '@/lib/seo'
+import SignupForm from '@/components/SignupForm'
 
 export default function Footer() {
   // Use environment variable or default to localhost for development
@@ -136,6 +137,9 @@ export default function Footer() {
                 </a>
               </div>
             </div>
+          </div>
+          <div className="mt-12 pt-8 border-t border-white/10">
+            <SignupForm source="footer" variant="compact" />
           </div>
           <div className="mt-12 pt-8 border-t border-white/10 text-sm text-secondary text-center">
             <p>&copy; {currentYear} The Band Project. All rights reserved.</p>

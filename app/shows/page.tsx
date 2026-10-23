@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Script from 'next/script'
 import { motion } from 'framer-motion'
 import ShowCard from '@/components/ShowCard'
+import SignupForm from '@/components/SignupForm'
 import { generateStructuredData } from '@/lib/seo'
 import { filterUpcomingShowsByDate } from '@/lib/shows'
 import { Show } from '@/lib/schema'
@@ -166,6 +167,10 @@ export default function ShowsPage() {
               </p>
             </div>
           )}
+
+          <div id="show-reminders" className="mt-16">
+            <SignupForm source="shows" variant="full" />
+          </div>
         </div>
       </div>
     </>

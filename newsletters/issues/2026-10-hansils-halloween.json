@@ -1,0 +1,19 @@
+{
+  "id": "2026-10-hansils-halloween",
+  "subject": "Hansil's — Saturday, October 17",
+  "preheader": "The Band Project at Hansil's Bar & Grill in Oakland.",
+  "headline": "See you at Hansil's",
+  "intro": "Sample issue. The file name says Halloween because that is the working title from the brief. The date, time, and address below are the real October 17 listing from the site, not an invented set time.",
+  "shows": [
+    {
+      "title": "Hansil's Bar & Grill",
+      "date": "Saturday, October 17, 2026",
+      "time": "8:00 PM – 11:00 PM",
+      "location": "Hansil's Bar & Grill, Oakland, NJ",
+      "details": "7 Ramapo Valley Rd, Oakland, NJ 07436. Taken from the show listing on the site."
+    }
+  ],
+  "buttonText": "Show details",
+  "buttonUrl": "https://thebandproject.live/shows",
+  "closing": "Timeless Covers. Original Music. Always a Party."
+}

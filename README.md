@@ -10,11 +10,13 @@ A minimalist, cinematic website for The Band Project built with Next.js 14+ (App
 - **LLM Discovery**: AI-friendly content and `/llm-summary.json` endpoint
 - **Responsive**: Mobile-first design with desktop enhancements
 - **Accessible**: ARIA labels, keyboard navigation, and proper contrast ratios
+- **Fan email list**: Double opt-in show reminders with one-click unsubscribe
+- **HTML newsletter**: Sent through AWS SES a few times a year
 
 ## Tech Stack
 
 - **Frontend**: Next.js 14+ (App Router), TypeScript, Tailwind CSS, Framer Motion
-- **Backend**: AWS Lambda, API Gateway, DynamoDB, SES
+- **Backend**: AWS Lambda, API Gateway, DynamoDB, SES (contact form and the fan newsletter)
 - **Infrastructure**: AWS S3, CloudFront CDN, Route 53, AWS Amplify
 
 ## Getting Started
@@ -61,11 +63,13 @@ npm start
 
 ```
 /app
-  /api              # API routes
+  /api              # API routes, including /api/subscribe, /api/confirm, /api/unsubscribe
   /background       # Background page
   /shows            # Shows page
   /contact          # Contact page
   /gear             # Gear store page
+  /newsletter/confirm  # Double opt-in confirmation page
+  /unsubscribe      # One-click unsubscribe page
   layout.tsx        # Root layout
   page.tsx          # Home page
   globals.css       # Global styles
@@ -74,15 +78,35 @@ npm start
 
 /components
   Header.tsx        # Global navigation
-  Footer.tsx        # Footer with structured data
+  Footer.tsx        # Footer with structured data and signup form
+  SignupForm.tsx    # Fan list signup (footer and shows)
   HeroVideo.tsx     # Hero video component
   ShowCard.tsx      # Show card component
   MediaDrawer.tsx   # Media drawer component
 
 /lib
   aws.ts            # AWS service integrations
+  subscribers.ts    # Fan list DynamoDB helpers and local JSON fallback
+  email.ts          # Confirmation and newsletter sending via SES
+  newsletter-config.ts  # From name, reply-to, and postal address
   schema.ts         # TypeScript interfaces
   seo.ts            # SEO utilities
+
+/emails
+  newsletter.html   # Newsletter HTML template
+  newsletter.txt    # Plain-text twin
+
+/newsletters
+  /issues           # One JSON file per send
+  /logs             # Send logs (gitignored)
+
+/scripts/newsletter
+  render.ts         # Merges an issue into the template
+  send.ts           # Preview, test, dry-run, and send
+
+/infra/newsletter
+  template.yaml     # SAM: subscribers table, SES events, alarms
+  /handler          # Bounce and complaint Lambda
 
 /content
   shows.json        # Static shows data (fallback)
@@ -99,8 +123,8 @@ npm start
 **📖 See [AWS_SETUP.md](./AWS_SETUP.md) for complete step-by-step instructions.**
 
 Quick overview:
-- DynamoDB tables for shows and messages
-- AWS SES for email delivery
+- DynamoDB tables for shows, messages, and newsletter subscribers (`band-project-subscribers`)
+- AWS SES for the contact form and the fan newsletter (`news@thebandproject.live`)
 - IAM roles and policies
 - Environment variables in Amplify
 - Route 53 DNS configuration
@@ -187,9 +211,49 @@ Configure these in **AWS Amplify Console → App settings → Environment variab
 | `AMPLIFY_REGION` | AWS region for services | Production only | `us-east-1` |
 | `SHOWS_TABLE` | DynamoDB shows table name | Production only | Uses static data |
 | `MESSAGES_TABLE` | DynamoDB messages table name | Production only | Uses static data |
-| `CONTACT_EMAIL` | Email for contact form submissions | Production only | `book@thebandproject.live` |
+| `CONTACT_EMAIL` | Email for contact form submissions and newsletter replies | Production only | `book@thebandproject.live` |
+| `SUBSCRIBERS_TABLE` | DynamoDB subscribers table name (`band-project-subscribers`) | Production only | Uses `.data/subscribers.json` |
+| `NEWSLETTER_FROM_EMAIL` | Verified SES sender address (`news@thebandproject.live`) | Production only | Confirmation links print to the terminal |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile public site key | Production only | `0x4AAAAAAFjD5OJhw9mKaFKK` |
+| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key (server-side verification) | Production only | Cloudflare always-pass test secret |
 
-**Note:** The site works locally without these variables. They're only needed for production AWS integration.
+**Note:** The site works locally without these variables. They're only needed for production AWS integration. Signup still runs locally: subscribers are stored in `.data/subscribers.json`, and the confirmation link is printed in the terminal instead of being emailed.
+
+## Spam Protection
+
+Signup is protected in layers:
+
+- A hidden honeypot field drops bots without an error
+- Submissions faster than 2 seconds after the form renders are dropped
+- Cloudflare Turnstile is checked before anything is written or emailed
+- Each IP can try at most 5 signups an hour
+- A subscriber is not emailed a show reminder until they confirm
+- SES bounce and complaint alarms notify `book@thebandproject.live` if reputation slips
+
+## Sending a Newsletter
+
+1. Copy the latest file in `newsletters/issues/` to a new file and edit the fields.
+2. `npm run newsletter:preview` and review it in the browser.
+3. `npm run newsletter:test -- --test you@example.com` and check it in Gmail on phone and desktop.
+4. `npm run newsletter:send -- --dry-run` to confirm the recipient count.
+5. `npm run newsletter:send` and type the count to confirm.
+6. Check the log in `newsletters/logs/`.
+
+Set `POSTAL_ADDRESS` in `lib/newsletter-config.ts` before any of those commands. The script refuses to run while it is still `TODO`.
+
+## Managing the Fan List
+
+View subscribers in the AWS Console: DynamoDB → `band-project-subscribers` → Explore items.
+
+Export the table:
+
+```bash
+aws dynamodb scan --table-name band-project-subscribers
+```
+
+To unsubscribe someone manually, open their item and set `status` to `unsubscribed`.
+
+Local development works with no AWS configuration. Subscribers land in `.data/subscribers.json`, and confirmation links print in the `npm run dev` terminal.
 
 ## SEO & LLM Optimization
 

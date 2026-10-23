@@ -147,6 +147,15 @@ If you need to send to unverified emails:
     {
       "Effect": "Allow",
       "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem"
+      ],
+      "Resource": "arn:aws:dynamodb:us-east-1:<ACCOUNT_ID>:table/band-project-subscribers"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
         "ses:SendEmail",
         "ses:SendRawEmail"
       ],
@@ -181,11 +190,17 @@ Add these variables:
 
 | Variable Name | Value | Description |
 |---------------|-------|-------------|
-| `NEXT_PUBLIC_BASE_URL` | `https://thebandproject.com` | Your website URL |
+| `NEXT_PUBLIC_BASE_URL` | `https://thebandproject.live` | Your website URL (confirmation and unsubscribe links) |
 | `AMPLIFY_REGION` | `us-east-1` | AWS region (change if different) |
 | `SHOWS_TABLE` | `the-band-project-shows` | DynamoDB shows table name |
 | `MESSAGES_TABLE` | `the-band-project-messages` | DynamoDB messages table name |
-| `CONTACT_EMAIL` | `book@thebandproject.live` | Email for contact form |
+| `CONTACT_EMAIL` | `book@thebandproject.live` | Contact form and newsletter reply-to |
+| `SUBSCRIBERS_TABLE` | `band-project-subscribers` | Fan list table. Omit locally; the site uses `.data/subscribers.json` |
+| `NEWSLETTER_FROM_EMAIL` | `news@thebandproject.live` | Verified SES From address. Omit locally; confirmation links print in the terminal |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | `0x4AAAAAAFjD5OJhw9mKaFKK` | Public Turnstile site key. The form uses this same value if the variable is unset |
+| `TURNSTILE_SECRET_KEY` | *(from the Turnstile dashboard)* | Secret key. Never commit it. Required in production once `SUBSCRIBERS_TABLE` is set |
+
+The Amplify compute role does not need `dynamodb:Scan` on the subscribers table. The send script runs on your machine with your own AWS credentials. Replace `<ACCOUNT_ID>` in the policy above.
 
 3. **Attach IAM Role**
    - Go to **App settings** → **General**
@@ -252,6 +267,59 @@ Add these variables:
    - Select your email/domain
    - Click **Send test email**
    - Verify email is received
+
+---
+
+## Fan email newsletter
+
+The list is double opt-in. A signup writes a `pending` row and emails a confirmation link. Show reminders go only to `active` rows. Unsubscribe is one click and does not require another confirmation.
+
+### Domain and SES
+
+1. In SES (us-east-1), verify the domain `thebandproject.live` and the address `news@thebandproject.live`.
+2. Turn on Easy DKIM and publish the three CNAME records SES gives you.
+3. Set a custom MAIL FROM domain, such as `mail.thebandproject.live`, and publish the MX and SPF records SES shows.
+4. Publish a DMARC record for the domain. Start with `p=none` while you watch reports, then tighten it.
+5. Request production access if the account is still in the SES sandbox. Sandbox mode only delivers to verified addresses.
+6. Leave `POSTAL_ADDRESS` in `lib/newsletter-config.ts` as a real street address before the first send. The send script exits while it still contains `TODO`.
+
+### Deploy the table, events, and alarms
+
+From the repo, in us-east-1:
+
+```bash
+sam build --template-file infra/newsletter/template.yaml
+sam deploy --guided --template-file infra/newsletter/template.yaml --stack-name band-project-newsletter --region us-east-1
+```
+
+That stack creates:
+
+- DynamoDB table `band-project-subscribers` (on-demand, point-in-time recovery, TTL on `expiresAt`)
+- SES configuration set `band-project-newsletter`
+- SNS topic `band-project-ses-events` and a Lambda that sets `bounced` (permanent bounces only) or `complained`
+- CloudWatch alarms on `Reputation.BounceRate` (3%) and `Reputation.ComplaintRate` (0.1%), each notifying SNS topic `band-project-newsletter-alerts`
+
+After deploy, confirm the email subscription sent to `book@thebandproject.live`. The alarm topic does nothing until that confirmation is clicked.
+
+To check the bounce path, send a newsletter test to `bounce@simulator.amazonses.com` after the configuration set is live, then confirm that address is `bounced` in the table. Do this only after the stack exists.
+
+### Turnstile
+
+Create a Cloudflare Turnstile widget for `thebandproject.live` and add `localhost` if you want the widget to run in local development. Put the site key in `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and the secret in `TURNSTILE_SECRET_KEY` in Amplify, then redeploy so the public key is inlined at build time. The secret stays server-side.
+
+If `SUBSCRIBERS_TABLE` is set and the secret is missing, signup verification fails closed and nothing is stored. Locally, with the table unset and no secret, the API uses Cloudflare's always-pass test secret so curl can exercise the route.
+
+### Console and CLI
+
+| Task | Console | CLI |
+|------|---------|-----|
+| See who is subscribed | DynamoDB → `band-project-subscribers` → Explore items | `aws dynamodb scan --table-name band-project-subscribers` |
+| Unsubscribe one person | Edit the item and set `status` to `unsubscribed` | `aws dynamodb update-item --table-name band-project-subscribers --key '{"email":{"S":"fan@example.com"}}' --update-expression "SET #s = :s" --expression-attribute-names '{"#s":"status"}' --expression-attribute-values '{":s":{"S":"unsubscribed"}}'` |
+| See a bounce or complaint | DynamoDB item `status` is `bounced` or `complained` | Same scan, filter on `status` |
+| Confirm the alarm email | SNS → `band-project-newsletter-alerts` → subscriptions | Confirm the message AWS emails to `book@thebandproject.live` |
+| Send an issue | Not from the console. Use the local script | `npm run newsletter:preview`, then `npm run newsletter:test -- --test you@example.com`, then `npm run newsletter:send -- --dry-run`, then `npm run newsletter:send` |
+
+Sending is documented step by step in the README under "Sending a Newsletter".
 
 ---
 

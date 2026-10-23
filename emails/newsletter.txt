@@ -1,0 +1,19 @@
+{{headline}}
+
+{{intro}}
+
+{{#shows}}
+{{title}}
+{{date}} · {{time}}
+{{location}}
+{{details}}
+
+{{/shows}}
+{{buttonText}}: {{buttonUrl}}
+
+{{closing}}
+
+---
+You're getting this because you signed up for show reminders at thebandproject.live.
+{{postalAddress}}
+Unsubscribe: {{unsubscribeUrl}}

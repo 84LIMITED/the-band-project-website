@@ -28,6 +28,13 @@ yarn-error.log*
 .env*.local
 .env
 
+# fan list local store and newsletter output
+.data/
+newsletters/preview.html
+newsletters/logs/*
+!newsletters/logs/.gitkeep
+.aws-sam/
+
 # vercel
 .vercel
 

@@ -6,7 +6,7 @@ frontend:
         - npm ci
     build:
       commands:
-        - env | grep -e S3_ACCESS_KEY_ID -e S3_SECRET_ACCESS_KEY -e S3_REGION -e S3_BUCKET_NAME -e BALLOT_ACCESS_KEY >> .env.production
+        - env | grep -e S3_ACCESS_KEY_ID -e S3_SECRET_ACCESS_KEY -e S3_REGION -e S3_BUCKET_NAME -e BALLOT_ACCESS_KEY -e SHOWS_TABLE -e MESSAGES_TABLE -e SUBSCRIBERS_TABLE -e NEWSLETTER_FROM_EMAIL -e TURNSTILE_SECRET_KEY -e NEXT_PUBLIC_TURNSTILE_SITE_KEY -e AMPLIFY_REGION -e NEXT_PUBLIC_BASE_URL -e CONTACT_EMAIL >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
