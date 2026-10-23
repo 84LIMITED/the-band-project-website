@@ -5,7 +5,7 @@ export const FROM_NAME = 'The Band Project'
  * CAN-SPAM requires a real postal address in every commercial email.
  * Replace TODO with a PO box or the business address before sending.
  */
-export const POSTAL_ADDRESS = 'TODO'
+export const POSTAL_ADDRESS = 'The Band Project | 35 Manor Rd, Wyckoff, NJ 07481'
 
 export const CONFIGURATION_SET = 'band-project-newsletter'
 
