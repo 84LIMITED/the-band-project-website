@@ -9,6 +9,25 @@ export const metadata: Metadata = genMetadata({
   path: '/background',
 })
 
+const galleryImages = [
+  ...[1, 2, 3, 4, 5, 6].map((i) => ({
+    src: `/images/gallery-${i}.png`,
+    alt: IMAGE_VIDEO_ALT_TITLE,
+  })),
+  {
+    src: '/images/gallery-7.jpeg',
+    alt: `${IMAGE_VIDEO_ALT_TITLE} — singer center stage with arms open and the full band at Hansil's in Oakland, NJ, October 17, 2026`,
+  },
+  {
+    src: '/images/gallery-8.jpeg',
+    alt: `${IMAGE_VIDEO_ALT_TITLE} — singer in a leather jacket with both hands raised at Hansil's in Oakland, NJ, October 17, 2026`,
+  },
+  {
+    src: '/images/gallery-9.jpeg',
+    alt: `${IMAGE_VIDEO_ALT_TITLE} — singer in red at the microphone with the full band at Hansil's in Oakland, NJ, October 17, 2026`,
+  },
+]
+
 export default function BackgroundPage() {
   const pageData = generateStructuredData('WebPage', {
     name: 'About The Band Project | Wyckoff NJ Live Band',
@@ -143,15 +162,16 @@ We believe live music should create connection, community, and love—-and we br
           <section>
             <h2 className="text-3xl md:text-4xl font-extrabold mb-6 uppercase">Gallery</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
+              {galleryImages.map((image) => (
                 <div
-                  key={i}
+                  key={image.src}
                   className="relative aspect-square overflow-hidden bg-white/10"
                 >
                   <Image
-                    src={`/images/gallery-${i}.png`}
-                    alt={IMAGE_VIDEO_ALT_TITLE}
+                    src={image.src}
+                    alt={image.alt}
                     fill
+                    sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-cover hover:scale-105 transition-transform duration-300"
                   />
                 </div>
