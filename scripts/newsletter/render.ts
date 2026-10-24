@@ -1,5 +1,13 @@
 import { readFileSync, readdirSync, statSync } from 'fs'
 import path from 'path'
+import {
+  calendarBlockHtml,
+  calendarBlockText,
+  calendarIsComplete,
+  type NewsletterCalendar,
+} from './calendar'
+
+export type { NewsletterCalendar }
 
 export interface NewsletterShow {
   title: string
@@ -7,6 +15,7 @@ export interface NewsletterShow {
   time: string
   location: string
   details: string
+  calendar?: NewsletterCalendar
 }
 
 export interface NewsletterIssue {
@@ -19,6 +28,7 @@ export interface NewsletterIssue {
   buttonText: string
   buttonUrl: string
   closing: string
+  calendarButtonText?: string
 }
 
 const ISSUE_DIR = path.join(process.cwd(), 'newsletters', 'issues')
@@ -73,12 +83,22 @@ function fill(template: string, values: Record<string, string>, escape: boolean)
   })
 }
 
+function calendarPieces(issue: NewsletterIssue): { html: string; text: string } {
+  const label = issue.calendarButtonText?.trim() || 'Add to Calendar'
+  const shows = issue.shows.filter((show) => calendarIsComplete(show.calendar))
+  return {
+    html: shows.map((show) => calendarBlockHtml(issue.id, show.calendar as NewsletterCalendar, label)).join('\n'),
+    text: shows.map((show) => calendarBlockText(issue.id, show.calendar as NewsletterCalendar, label)).join('\n'),
+  }
+}
+
 export function renderIssue(
   issue: NewsletterIssue,
   options: { unsubscribeUrl: string; postalAddress: string; subjectPrefix?: string }
 ): { subject: string; html: string; text: string } {
   const htmlTemplate = readFileSync(path.join(process.cwd(), 'emails', 'newsletter.html'), 'utf8')
   const textTemplate = readFileSync(path.join(process.cwd(), 'emails', 'newsletter.txt'), 'utf8')
+  const calendar = calendarPieces(issue)
   const fields = {
     subject: `${options.subjectPrefix || ''}${issue.subject}`,
     preheader: issue.preheader,
@@ -89,10 +109,19 @@ export function renderIssue(
     closing: issue.closing,
     postalAddress: options.postalAddress,
     unsubscribeUrl: options.unsubscribeUrl,
+    detailsButtonMargin: calendar.html ? '28px auto 16px auto' : '28px auto',
   }
 
-  const html = fill(fillShows(htmlTemplate, issue.shows, true), fields, true)
-  const text = fill(fillShows(textTemplate, issue.shows, false), fields, false).replace(/\n{3,}/g, '\n\n')
+  const html = fill(
+    fillShows(htmlTemplate, issue.shows, true).replaceAll('{{calendarBlock}}', calendar.html),
+    fields,
+    true
+  )
+  const text = fill(
+    fillShows(textTemplate, issue.shows, false).replaceAll('{{calendarText}}', calendar.text),
+    fields,
+    false
+  ).replace(/\n{3,}/g, '\n\n')
 
   return { subject: fields.subject, html, text }
 }

@@ -1,0 +1,28 @@
+{
+  "id": "2026-11-shortways",
+  "subject": "Join The Band Project on Saturday January 9th at Shortways",
+  "preheader": "The Band Project at Shortways Barn in Hawthorne, NJ.",
+  "headline": "See you at Shortways",
+  "intro": "You don't want to miss this show.  Back at Shortways to kick off 2027.",
+  "shows": [
+    {
+      "title": "Shortways Barn",
+      "date": "Saturday, January 9, 2027",
+      "time": "9:00 PM – 12:00 AM",
+      "location": "Shortways Barn",
+      "details": "991 Goffle Rd, Hawthorne, NJ 07506",
+      "calendar": {
+        "title": "The Band Project at Shortways Barn",
+        "start": "2027-01-09T21:00:00",
+        "end": "2027-01-10T00:00:00",
+        "timezone": "America/New_York",
+        "address": "Shortways Barn, 991 Goffle Rd, Hawthorne, NJ 07506",
+        "description": "Timeless Covers. Original Music. Always a Party. Show details: https://thebandproject.live/shows"
+      }
+    }
+  ],
+  "buttonText": "Show details",
+  "buttonUrl": "https://thebandproject.live/shows",
+  "calendarButtonText": "Add to Calendar",
+  "closing": "Timeless Covers. Original Music. Always a Party."
+}

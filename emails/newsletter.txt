@@ -11,6 +11,7 @@
 {{/shows}}
 {{buttonText}}: {{buttonUrl}}
 
+{{calendarText}}
 Button not working? Paste this link into your browser:
 {{buttonUrl}}
 

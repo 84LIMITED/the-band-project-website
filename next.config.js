@@ -11,6 +11,17 @@ const nextConfig = {
       { source: '/setlist-vote', destination: '/setlist-vote.html' },
     ]
   },
+  async headers() {
+    return [
+      {
+        source: '/calendar/:file*',
+        headers: [
+          { key: 'Content-Type', value: 'text/calendar; charset=utf-8' },
+          { key: 'Content-Disposition', value: 'attachment' },
+        ],
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
