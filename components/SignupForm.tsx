@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { AnimatePresence, motion } from 'framer-motion'
 interface SignupFormProps {
@@ -12,6 +13,7 @@ const SUCCESS = 'Check your inbox to confirm your email.'
 
 export default function SignupForm({ source, variant = 'compact' }: SignupFormProps) {
   const full = variant === 'full'
+  const pathname = usePathname()
   const turnstileRef = useRef<TurnstileInstance>(null)
   const [email, setEmail] = useState('')
   const [website, setWebsite] = useState('')
@@ -27,6 +29,23 @@ export default function SignupForm({ source, variant = 'compact' }: SignupFormPr
   useEffect(() => {
     setTs(Date.now())
   }, [])
+
+  useEffect(() => {
+    if (source !== 'footer') return
+    if (pathname !== '/' || window.location.hash !== '#email-list') return
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const delay = window.innerWidth < 768 ? 320 : 0
+    const timer = window.setTimeout(() => {
+      document.getElementById('email-list')?.scrollIntoView({
+        behavior: reduced ? 'auto' : 'smooth',
+        block: 'start',
+      })
+      document.getElementById('signup-email-footer')?.focus({ preventScroll: true })
+    }, delay)
+
+    return () => window.clearTimeout(timer)
+  }, [pathname, source])
 
   function resetWidget() {
     setToken('')
@@ -68,7 +87,11 @@ export default function SignupForm({ source, variant = 'compact' }: SignupFormPr
   }
 
   return (
-    <div aria-live="polite">
+    <div
+      id={source === 'footer' ? 'email-list' : undefined}
+      className={source === 'footer' ? 'scroll-mt-24' : undefined}
+      aria-live="polite"
+    >
       <AnimatePresence mode="wait">
         {success ? (
           <motion.p
