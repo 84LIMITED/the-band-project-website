@@ -55,12 +55,12 @@ function confirmationHtml(confirmUrl: string, unsubscribeUrl: string): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="supported-color-schemes" content="light dark">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
 <style>
-  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  :root { color-scheme: dark; }
   @media (prefers-color-scheme: dark) {
-    .btn { background-color:#FFFFFF !important; color:#000000 !important; }
+    .btn, .btn span { color:#FFFFFF !important; -webkit-text-fill-color:#FFFFFF !important; }
   }
 </style>
 <title>Confirm your email for The Band Project</title>
@@ -85,8 +85,10 @@ function confirmationHtml(confirmUrl: string, unsubscribeUrl: string): string {
           <td align="center" bgcolor="#000000" style="background-color:#000000;color:#FFFFFF;padding:0;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:28px auto;">
               <tr>
-                <td align="center" bgcolor="#FFFFFF" style="background-color:#FFFFFF;color:#000000;border:2px solid #FFFFFF;border-radius:4px;">
-                  <a href="${safeConfirm}" target="_blank" class="btn" style="display:inline-block;padding:14px 32px;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#000000;background-color:#FFFFFF;text-decoration:none;">Confirm my email</a>
+                <td align="center" bgcolor="#000000" style="background-color:#000000;border:2px solid #FFFFFF;border-radius:4px;">
+                  <a href="${safeConfirm}" target="_blank" class="btn" style="display:inline-block;padding:14px 32px;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;text-decoration:none;">
+                    <span style="color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;">Confirm my email</span>
+                  </a>
                 </td>
               </tr>
             </table>
