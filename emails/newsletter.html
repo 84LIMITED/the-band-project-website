@@ -5,16 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta name="supported-color-schemes" content="light dark">
+<style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .btn { background-color:#FFFFFF !important; color:#000000 !important; }
+  }
+</style>
 <title>{{subject}}</title>
 </head>
-<body style="margin:0;padding:0;background-color:#000000;color:#FFFFFF;">
-<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;color:#000000;">{{preheader}}</div>
+<body bgcolor="#000000" style="margin:0;padding:0;background-color:#000000;color:#FFFFFF;">
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;color:#000000;background-color:#000000;">{{preheader}}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="background-color:#000000;color:#FFFFFF;">
   <tr>
     <td align="center" bgcolor="#000000" style="padding:32px 16px;background-color:#000000;color:#FFFFFF;">
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="width:100%;max-width:600px;background-color:#000000;color:#FFFFFF;">
         <tr>
-          <td align="center" bgcolor="#000000" style="padding:0 0 28px 0;background-color:#000000;">
+          <td align="center" bgcolor="#000000" style="padding:0 0 28px 0;background-color:#000000;color:#FFFFFF;">
             <img src="https://thebandproject.live/images/the-band-project-logo.png" width="96" height="96" alt="The Band Project" style="display:block;border:0;outline:none;text-decoration:none;width:96px;height:96px;background-color:#000000;">
           </td>
         </tr>
@@ -26,7 +32,7 @@
         </tr>
         {{#shows}}
         <tr>
-          <td bgcolor="#000000" style="padding:20px 0 0 0;background-color:#000000;border-top:1px solid #E5E7EB;">
+          <td bgcolor="#000000" style="padding:20px 0 0 0;background-color:#000000;color:#FFFFFF;border-top:1px solid #E5E7EB;">
             <p style="margin:16px 0 4px 0;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:20px;line-height:1.3;font-weight:700;color:#FFFFFF;background-color:#000000;">{{title}}</p>
             <p style="margin:0 0 4px 0;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#BDBDBD;background-color:#000000;">{{date}} · {{time}}</p>
             <p style="margin:0 0 4px 0;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#FFFFFF;background-color:#000000;">{{location}}</p>
@@ -35,14 +41,20 @@
         </tr>
         {{/shows}}
         <tr>
-          <td align="center" bgcolor="#000000" style="padding:32px 0;background-color:#000000;">
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <td align="center" bgcolor="#000000" style="padding:0;background-color:#000000;color:#FFFFFF;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:28px auto;">
               <tr>
-                <td align="center" bgcolor="#FFFFFF" style="background-color:#FFFFFF;">
-                  <a href="{{buttonUrl}}" style="display:inline-block;padding:14px 28px;background-color:#FFFFFF;color:#000000;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;">{{buttonText}}</a>
+                <td align="center" bgcolor="#FFFFFF" style="background-color:#FFFFFF;color:#000000;border:2px solid #FFFFFF;border-radius:4px;">
+                  <a href="{{buttonUrl}}" target="_blank" class="btn" style="display:inline-block;padding:14px 32px;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#000000;background-color:#FFFFFF;text-decoration:none;">{{buttonText}}</a>
                 </td>
               </tr>
             </table>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" bgcolor="#000000" style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#BDBDBD;background-color:#000000;padding:0 0 8px 0;">
+            <p style="margin:0 0 8px 0;color:#BDBDBD;background-color:#000000;">Button not working? Paste this link into your browser:</p>
+            <a href="{{buttonUrl}}" target="_blank" style="color:#FFFFFF;background-color:#000000;text-decoration:underline;">{{buttonUrl}}</a>
           </td>
         </tr>
         <tr>

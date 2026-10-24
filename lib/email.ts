@@ -57,40 +57,52 @@ function confirmationHtml(confirmUrl: string, unsubscribeUrl: string): string {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta name="supported-color-schemes" content="light dark">
+<style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .btn { background-color:#FFFFFF !important; color:#000000 !important; }
+  }
+</style>
 <title>Confirm your email for The Band Project</title>
 </head>
-<body style="margin:0;padding:0;background-color:#000000;color:#FFFFFF;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="background-color:#000000;">
+<body bgcolor="#000000" style="margin:0;padding:0;background-color:#000000;color:#FFFFFF;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="background-color:#000000;color:#FFFFFF;">
   <tr>
-    <td align="center" style="padding:32px 16px;background-color:#000000;">
-      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background-color:#000000;">
+    <td align="center" bgcolor="#000000" style="padding:32px 16px;background-color:#000000;color:#FFFFFF;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="width:100%;max-width:600px;background-color:#000000;color:#FFFFFF;">
         <tr>
-          <td align="center" style="padding:0 0 24px 0;background-color:#000000;">
-            <img src="${LOGO_URL}" width="96" height="96" alt="The Band Project" style="display:block;border:0;outline:none;text-decoration:none;width:96px;height:96px;">
+          <td align="center" bgcolor="#000000" style="padding:0 0 24px 0;background-color:#000000;color:#FFFFFF;">
+            <img src="${LOGO_URL}" width="96" height="96" alt="The Band Project" style="display:block;border:0;outline:none;text-decoration:none;width:96px;height:96px;background-color:#000000;">
           </td>
         </tr>
         <tr>
-          <td style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:28px;line-height:1.3;font-weight:700;color:#FFFFFF;background-color:#000000;padding:0 0 16px 0;">Confirm your email</td>
+          <td bgcolor="#000000" style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:28px;line-height:1.3;font-weight:700;color:#FFFFFF;background-color:#000000;padding:0 0 16px 0;">Confirm your email</td>
         </tr>
         <tr>
-          <td style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#BDBDBD;background-color:#000000;padding:0 0 28px 0;">Tap the button to get show reminders from The Band Project. We send 8-10 emails a year.</td>
+          <td bgcolor="#000000" style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#BDBDBD;background-color:#000000;padding:0 0 8px 0;">Tap the button to get show reminders from The Band Project. We send 8-10 emails a year.</td>
         </tr>
         <tr>
-          <td align="center" style="background-color:#000000;padding:0 0 8px 0;">
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <td align="center" bgcolor="#000000" style="background-color:#000000;color:#FFFFFF;padding:0;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:28px auto;">
               <tr>
-                <td align="center" bgcolor="#FFFFFF" style="background-color:#FFFFFF;">
-                  <a href="${safeConfirm}" style="display:inline-block;padding:14px 28px;background-color:#FFFFFF;color:#000000;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;">Confirm my email</a>
+                <td align="center" bgcolor="#FFFFFF" style="background-color:#FFFFFF;color:#000000;border:2px solid #FFFFFF;border-radius:4px;">
+                  <a href="${safeConfirm}" target="_blank" class="btn" style="display:inline-block;padding:14px 32px;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#000000;background-color:#FFFFFF;text-decoration:none;">Confirm my email</a>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
-          <td style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#BDBDBD;background-color:#000000;padding:28px 0 0 0;">If you didn't sign up, ignore this email and you won't hear from us.</td>
+          <td align="center" bgcolor="#000000" style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#BDBDBD;background-color:#000000;padding:0 0 28px 0;">
+            <p style="margin:0 0 8px 0;color:#BDBDBD;background-color:#000000;">Button not working? Paste this link into your browser:</p>
+            <a href="${safeConfirm}" target="_blank" style="color:#FFFFFF;background-color:#000000;text-decoration:underline;">${safeConfirm}</a>
+          </td>
         </tr>
         <tr>
-          <td style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#BDBDBD;background-color:#000000;padding:16px 0 0 0;"><a href="${safeUnsubscribe}" style="color:#FFFFFF;">Unsubscribe</a></td>
+          <td bgcolor="#000000" style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#BDBDBD;background-color:#000000;padding:0 0 0 0;">If you didn't sign up, ignore this email and you won't hear from us.</td>
+        </tr>
+        <tr>
+          <td bgcolor="#000000" style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#BDBDBD;background-color:#000000;padding:16px 0 0 0;"><a href="${safeUnsubscribe}" target="_blank" style="color:#FFFFFF;background-color:#000000;">Unsubscribe</a></td>
         </tr>
       </table>
     </td>
@@ -105,6 +117,9 @@ function confirmationText(confirmUrl: string, unsubscribeUrl: string): string {
 
 Tap the link to get show reminders. We send 8-10 emails a year.
 
+Confirm my email: ${confirmUrl}
+
+Button not working? Paste this link into your browser:
 ${confirmUrl}
 
 If you didn't sign up, ignore this email and you won't hear from us.

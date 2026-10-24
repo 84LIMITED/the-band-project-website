@@ -11,6 +11,9 @@
 {{/shows}}
 {{buttonText}}: {{buttonUrl}}
 
+Button not working? Paste this link into your browser:
+{{buttonUrl}}
+
 {{closing}}
 
 ---
