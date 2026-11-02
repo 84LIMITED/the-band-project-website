@@ -9,7 +9,12 @@
     "lint": "next lint",
     "newsletter:preview": "tsx scripts/newsletter/send.ts --preview",
     "newsletter:test": "tsx scripts/newsletter/send.ts --test",
-    "newsletter:send": "tsx scripts/newsletter/send.ts --send"
+    "newsletter:send": "tsx scripts/newsletter/send.ts --send",
+    "shows:list": "tsx scripts/shows/shows.ts list",
+    "shows:add": "tsx scripts/shows/shows.ts add",
+    "shows:remove": "tsx scripts/shows/shows.ts remove",
+    "shows:seed": "tsx scripts/shows/shows.ts seed",
+    "shows:export": "tsx scripts/shows/shows.ts export"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.540.0",

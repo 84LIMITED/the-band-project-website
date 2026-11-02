@@ -1,0 +1,209 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import Script from 'next/script'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
+import HeroVideo from '@/components/HeroVideo'
+import ShowCard from '@/components/ShowCard'
+import { useMediaDrawer } from '@/components/MediaDrawerProvider'
+import { generateShowEvent, generateStructuredData, IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
+import { MediaItem, Show } from '@/lib/schema'
+import mediaData from '@/content/media.json'
+
+export default function HomePage({ upcomingShows }: { upcomingShows: Show[] }) {
+  const router = useRouter()
+  const { openDrawer } = useMediaDrawer()
+
+  const mediaItems = mediaData as MediaItem[]
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+
+  const musicGroupData = generateStructuredData('MusicGroup', {
+    description: 'The Band Project NJ | Timeless Covers. Original Music. Always a Party.',
+    genre: ['Rock', 'Jazz', 'Blues'],
+    url: baseUrl,
+  })
+
+  const eventData = upcomingShows.map((show) => generateShowEvent(show))
+
+  return (
+    <>
+      <Script
+        id="music-group-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(musicGroupData) }}
+      />
+      {eventData.map((event, index) => (
+        <Script
+          key={index}
+          id={`event-structured-data-${index}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(event) }}
+        />
+      ))}
+
+      {/* LLM-Friendly Summary Block */}
+      <section className="sr-only">
+        <h2>About The Band Project</h2>
+        <p>
+          The Band Project NJ | Timeless Covers. Original Music. Always a Party. Playing local venues and festivals across the Tri-State area.
+        </p>
+      </section>
+
+      {/* Hero Section */}
+      <HeroVideo
+        videoSrc="/video/hero.mp4"
+        videoSrcMobile="/video/hero-mobile.mp4"
+        posterSrc="/images/hero-poster.jpg"
+        title="The Band Project"
+        tagline="Timeless Covers. Original Music. Always a Party."
+        logoSrc="/images/hero-logo.png"
+        seoH1="NJ Live Band for Bars, Parties & Local Events"
+        onWatchClick={() => openDrawer()}
+        onShowsClick={() => router.push('/shows')}
+      />
+
+      {/* Upcoming Shows Teaser */}
+      {upcomingShows.length > 0 && (
+        <section className="py-24 px-4 md:px-6 lg:px-8">
+          <div className="container mx-auto">
+            <div className="grid grid-cols-4 md:grid-cols-12 gap-8 mb-12">
+              <div className="col-span-4 md:col-span-8">
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-4 uppercase">Upcoming Shows</h2>
+                <p className="text-secondary text-lg">Join us for our next performances</p>
+              </div>
+              <div className="col-span-4 md:col-span-4 flex items-end justify-end">
+                <Link
+                  href="/shows"
+                  className="text-sm uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors"
+                >
+                  View All Shows
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
+              {upcomingShows.map((show, index) => (
+                <ShowCard key={show.id} show={show} index={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Highlight Reel */}
+      {mediaItems.length > 0 && (
+        <section className="py-24 px-4 md:px-6 lg:px-8 bg-black/50">
+          <div className="container mx-auto">
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-12 uppercase">Highlights</h2>
+            <div className="overflow-x-auto">
+              <div className="flex gap-6 pb-4">
+                {mediaItems.map((item, index) => {
+                  const vertical = item.orientation === 'vertical'
+                  return (
+                    <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`flex-shrink-0 cursor-pointer ${vertical ? 'w-[200px] md:w-[240px]' : 'w-[300px] md:w-[400px]'}`}
+                    onClick={() => openDrawer()}
+                  >
+                    {item.thumbnail && (
+                      <div className={`relative mb-4 overflow-hidden bg-black ${vertical ? 'aspect-[9/16]' : 'aspect-video'}`}>
+                        <Image
+                          src={item.thumbnail}
+                          alt={IMAGE_VIDEO_ALT_TITLE}
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-colors">
+                          <svg
+                            width="48"
+                            height="48"
+                            viewBox="0 0 24 24"
+                            fill="white"
+                            className="opacity-80"
+                          >
+                            <polygon points="5 3 19 12 5 21 5 3" />
+                          </svg>
+                        </div>
+                      </div>
+                    )}
+                    <h3 className="text-lg font-medium mb-1">{item.title}</h3>
+                    {item.description && (
+                      <p className="text-sm text-secondary">{item.description}</p>
+                    )}
+                  </motion.div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Band Summary + contextual links to acquisition pages */}
+      <section className="py-24 px-4 md:px-6 lg:px-8">
+        <div className="container mx-auto max-w-4xl">
+          <div className="grid grid-cols-4 md:grid-cols-12 gap-8">
+            <div className="col-span-4 md:col-span-8">
+              <h2 className="text-4xl md:text-5xl font-extrabold mb-6 uppercase">The Band Project</h2>
+              <p className="text-lg text-secondary leading-relaxed mb-6">
+                Blending timeless covers with original music, The Band Project creates a live entertainment experience that transforms any night into a party—playing venues and festivals across the tri-state area.
+              </p>
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <Link href="/background" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  About us
+                </Link>
+                <Link href="/private-parties" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Private parties
+                </Link>
+                <Link href="/bars-breweries" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Bars & breweries
+                </Link>
+                <Link href="/festivals-town-events" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Festivals & town events
+                </Link>
+                <Link href="/setlist" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Setlist
+                </Link>
+                <Link href="/videos" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Videos
+                </Link>
+                <Link href="/contact" className="uppercase tracking-wider border-b border-white/40 hover:border-white transition-colors">
+                  Book us
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Gear Callout */}
+      <section className="py-24 px-4 md:px-6 lg:px-8 border-t border-white/10">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-4 md:grid-cols-12 gap-8 items-center">
+            <div className="col-span-4 md:col-span-8">
+              <h2 className="text-4xl md:text-5xl font-extrabold mb-4 uppercase">Gear & Merch</h2>
+              <p className="text-lg text-secondary mb-6">
+                Explore the instruments we play and shop our official merchandise.
+              </p>
+            </div>
+            <div className="col-span-4 md:col-span-4 flex justify-end">
+              <Link
+                href="/gear"
+                className="px-8 py-4 bg-white text-black font-medium uppercase tracking-wider text-sm hover:bg-secondary transition-colors"
+              >
+                Visit Gear Store
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}

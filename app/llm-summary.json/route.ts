@@ -1,27 +1,14 @@
 import { NextResponse } from 'next/server'
 import { getUpcomingShows } from '@/lib/aws'
-import showsData from '@/content/shows.json'
-import { filterUpcomingShowsByDate } from '@/lib/shows'
-import { Show } from '@/lib/schema'
 import { SIGNUP_PAGE_DESCRIPTION, SIGNUP_PAGE_PATH, SITE_ORIGIN } from '@/lib/newsletter-config'
 
-export async function GET(request: Request) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-    new URL(request.url).origin
+export const revalidate = 300
+
+export async function GET() {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || SITE_ORIGIN
 
   try {
-    let shows: Show[] = []
-    try {
-      shows = await getUpcomingShows()
-    } catch (error) {
-      console.error('DynamoDB fetch failed:', error)
-    }
-
-    if (shows.length === 0) {
-      shows = showsData as Show[]
-    }
-
-    shows = filterUpcomingShowsByDate(shows).sort((a, b) => a.date.localeCompare(b.date))
+    const shows = await getUpcomingShows()
 
     // Format shows for LLM consumption
     const formattedShows = shows.map((show) => ({
@@ -67,7 +54,7 @@ export async function GET(request: Request) {
     return NextResponse.json(summary, {
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=300',
       },
     })
   } catch (error) {

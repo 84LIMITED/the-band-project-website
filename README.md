@@ -87,7 +87,7 @@ npm start
   MediaDrawer.tsx   # Media drawer component
 
 /lib
-  aws.ts            # AWS service integrations
+  aws.ts            # Shows table scan, contact form, and SES
   subscribers.ts    # Fan list DynamoDB helpers and local JSON fallback
   email.ts          # Confirmation and newsletter sending via SES
   newsletter-config.ts  # From name, reply-to, postal address, and signup page path
@@ -106,12 +106,15 @@ npm start
   render.ts         # Merges an issue into the template
   send.ts           # Preview, test, dry-run, and send
 
+/scripts/shows
+  shows.ts          # List, add, remove, seed, and export shows in DynamoDB
+
 /infra/newsletter
   template.yaml     # SAM: subscribers table, SES events, alarms
   /handler          # Bounce and complaint Lambda
 
 /content
-  shows.json        # Static shows data (fallback)
+  shows.json        # Fallback snapshot and local-dev shows. Production reads DynamoDB.
   media.json        # Static media data
 
 /public
@@ -211,7 +214,7 @@ Configure these in **AWS Amplify Console → App settings → Environment variab
 |----------|-------------|----------|----------------|
 | `NEXT_PUBLIC_BASE_URL` | Base URL of the website | Production only | `http://localhost:3000` |
 | `AMPLIFY_REGION` | AWS region for services | Production only | `us-east-1` |
-| `SHOWS_TABLE` | DynamoDB shows table name | Production only | Uses static data |
+| `SHOWS_TABLE` | DynamoDB shows table name (`the-band-project-shows`) | Required in production | Unset. The site reads `content/shows.json` |
 | `MESSAGES_TABLE` | DynamoDB messages table name | Production only | Uses static data |
 | `CONTACT_EMAIL` | Email for contact form submissions and newsletter replies | Production only | `book@thebandproject.live` |
 | `SUBSCRIBERS_TABLE` | DynamoDB subscribers table name (`band-project-subscribers`) | Production only | Uses `.data/subscribers.json` |
@@ -219,7 +222,38 @@ Configure these in **AWS Amplify Console → App settings → Environment variab
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile public site key | Production only | `0x4AAAAAAFjD5OJhw9mKaFKK` |
 | `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key (server-side verification) | Production only | Cloudflare always-pass test secret |
 
-**Note:** The site works locally without these variables. They're only needed for production AWS integration. Signup still runs locally: subscribers are stored in `.data/subscribers.json`, and the confirmation link is printed in the terminal instead of being emailed.
+**Note:** The site works locally without these variables. They're only needed for production AWS integration. Signup still runs locally: subscribers are stored in `.data/subscribers.json`, and the confirmation link is printed in the terminal instead of being emailed. Shows live in DynamoDB in production. `content/shows.json` is the local-dev list and the fallback snapshot if DynamoDB cannot be reached.
+
+## Managing Shows
+
+Shows are stored in the DynamoDB table `the-band-project-shows`. A new show is a CLI command. It does not need a code change or a deploy. The home page, `/shows`, `/show-alerts`, and `/llm-summary.json` revalidate every 5 minutes (`revalidate = 300`), so a table change shows up on the live site within about 5 minutes.
+
+Amplify publishes the Next.js server build (`.next`, not a static export), so that revalidation runs on the host. `npm run dev` with no AWS variables still reads `content/shows.json` and does not log an error.
+
+Upcoming vs past is the show date compared with today in America/New_York. The stored `isUpcoming` flag is ignored when reading.
+
+Add a show (credentials from `aws configure`, table from `SHOWS_TABLE` or the default `the-band-project-shows`, region from `AMPLIFY_REGION` or `us-east-1`):
+
+```bash
+npm run shows:add -- --date 2027-09-18 --venue "The Venue" --city Mahwah --state NJ --address "1 Main St, Mahwah, NJ 07430" --time "8:00 PM – 11:00 PM"
+```
+
+Optional doors time: `--doors "7:00 PM"`. The id is `<date>-<venue-slug>`, and the command refuses to overwrite an existing id.
+
+```bash
+npm run shows:list
+npm run shows:remove -- --id 2027-09-18-the-venue
+```
+
+`shows:remove` prints the show and deletes it only after you type `y`.
+
+`content/shows.json` is not the live source. Before a deploy, if shows changed in the table, refresh the fallback snapshot and commit it:
+
+```bash
+npm run shows:export
+```
+
+`npm run shows:seed` loads `content/shows.json` into the table, overwriting items with the same id. Use it for a first-time load or to rebuild the table. The compute role needs `dynamodb:Scan` on the shows table; the policy is in `AWS_SETUP.md`. Mike attaches that policy. This repo does not change IAM.
 
 ## Spam Protection
 

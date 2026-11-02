@@ -9,10 +9,8 @@ import {
   SIGNUP_PAGE_TITLE,
   SITE_ORIGIN,
 } from '@/lib/newsletter-config'
+import { getNextShow } from '@/lib/aws'
 import { generateMetadata as genMetadata } from '@/lib/seo'
-import { filterUpcomingShowsByDate } from '@/lib/shows'
-import type { Show } from '@/lib/schema'
-import showsData from '@/content/shows.json'
 
 const PAGE_URL = `${SITE_ORIGIN}${SIGNUP_PAGE_PATH}`
 
@@ -68,12 +66,6 @@ const FAQ = [
     answer: 'Use the contact form on the Contact page or email book@thebandproject.live.',
   },
 ]
-
-function nextShow(): Show | undefined {
-  return filterUpcomingShowsByDate(showsData as Show[])
-    .slice()
-    .sort((a, b) => a.date.localeCompare(b.date))[0]
-}
 
 function structuredData() {
   return {
@@ -170,8 +162,10 @@ function FaqAnswer({ item }: { item: (typeof FAQ)[number] }) {
   return <p className="text-secondary mt-2">{item.answer}</p>
 }
 
-export default function ShowAlertsPage() {
-  const show = nextShow()
+export const revalidate = 300
+
+export default async function ShowAlertsPage() {
+  const show = await getNextShow()
 
   return (
     <>

@@ -14,39 +14,34 @@ This guide walks you through setting up all AWS services required for the websit
 
 ### Shows Table
 
-1. **Navigate to DynamoDB Console**
-   - Go to AWS Console → DynamoDB → Tables → Create table
+The live table is `the-band-project-shows`. Partition key: `id` (string). No sort key. The site does not query an index. `lib/aws.ts` runs a paginated `Scan`, then decides upcoming vs past by comparing `date` with today in America/New_York. `isUpcoming` is still stored on new items, and readers ignore it.
 
-2. **Table Configuration**
-   - **Table name**: `the-band-project-shows`
-   - **Partition key**: `id` (String)
-   - **Table settings**: Use default settings
-   - Click **Create table**
+Add, list, remove, seed, and export shows with the CLI in the README section **Managing Shows**. Do not edit the site code to add a show.
 
-3. **Create Global Secondary Index (GSI)**
-   - After table creation, go to **Indexes** tab
-   - Click **Create index**
-   - **Index name**: `upcoming-shows-index` (simpler name with hyphens)
-   - **Partition key**: `isUpcoming` (String) ⚠️ Use String, not Boolean
-   - **Sort key**: `date` (String)
-   - Click **Create index**
-   
-   **Important:** DynamoDB doesn't support Boolean as a key type. Use String and store values as `"true"` or `"false"`.
+`SHOWS_TABLE` is required in production (`the-band-project-shows`). When it is unset, local dev reads `content/shows.json` and does not log an error. If the table read throws, the site logs `shows: DynamoDB read failed` with the full error name and message and serves that JSON snapshot.
 
-4. **Add Sample Data (Optional)**
-   ```json
-   {
-     "id": "show-1",
-     "date": "2024-06-15",
-     "venue": "The Grand Theater",
-     "city": "Los Angeles",
-     "state": "CA",
-     "time": "8:00 PM",
-     "doors": "7:00 PM",
-     "ticketUrl": "https://example.com/tickets/show-1",
-     "isUpcoming": true
-   }
-   ```
+Before each write or delete, the CLI reads the partition key with `DescribeTable` and uses that attribute name. Today that name is `id`.
+
+### Shows read access for `TBP-SSR-Compute-Role`
+
+Mike attaches this policy himself. Do not apply it from the repo.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:Scan",
+        "dynamodb:GetItem",
+        "dynamodb:Query"
+      ],
+      "Resource": "arn:aws:dynamodb:us-east-1:739275455482:table/the-band-project-shows"
+    }
+  ]
+}
+```
 
 ### Messages Table
 
@@ -192,7 +187,7 @@ Add these variables:
 |---------------|-------|-------------|
 | `NEXT_PUBLIC_BASE_URL` | `https://thebandproject.live` | Your website URL (confirmation and unsubscribe links) |
 | `AMPLIFY_REGION` | `us-east-1` | AWS region (change if different) |
-| `SHOWS_TABLE` | `the-band-project-shows` | DynamoDB shows table name |
+| `SHOWS_TABLE` | `the-band-project-shows` | Required in production. Unset locally; the site reads `content/shows.json` |
 | `MESSAGES_TABLE` | `the-band-project-messages` | DynamoDB messages table name |
 | `CONTACT_EMAIL` | `book@thebandproject.live` | Contact form and newsletter reply-to |
 | `SUBSCRIBERS_TABLE` | `band-project-subscribers` | Fan list table. Omit locally; the site uses `.data/subscribers.json` |

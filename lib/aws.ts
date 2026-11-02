@@ -1,45 +1,131 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { DynamoDBDocumentClient, PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
+import { DynamoDBDocumentClient, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb'
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
+import showsData from '@/content/shows.json'
+import { hasValidShowDate } from '@/lib/calendar'
+import type { Show } from '@/lib/schema'
+import { filterUpcomingShowsByDate, isShowDateUpcoming } from '@/lib/shows'
 
-// Initialize AWS clients
-const dynamoClient = new DynamoDBClient({
-  region: process.env.AMPLIFY_REGION || 'us-east-1',
-})
+let documentClient: DynamoDBDocumentClient | undefined
 
-const dynamoDocClient = DynamoDBDocumentClient.from(dynamoClient)
+function docClient(): DynamoDBDocumentClient {
+  if (!documentClient) {
+    documentClient = DynamoDBDocumentClient.from(
+      new DynamoDBClient({
+        region: process.env.AMPLIFY_REGION || 'us-east-1',
+      })
+    )
+  }
+  return documentClient
+}
 
 const sesClient = new SESClient({
   region: process.env.AMPLIFY_REGION || 'us-east-1',
 })
 
 // DynamoDB table names
-const SHOWS_TABLE = process.env.SHOWS_TABLE || 'the-band-project-shows'
 const MESSAGES_TABLE = process.env.MESSAGES_TABLE || 'the-band-project-messages'
 
 // Contact form email configuration
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'book@thebandproject.live'
 
-export async function getUpcomingShows(): Promise<any[]> {
-  try {
-    const command = new QueryCommand({
-      TableName: SHOWS_TABLE,
-      IndexName: 'upcoming-shows-index',
-      KeyConditionExpression: 'sUpcoming = :upcoming',
-      ExpressionAttributeValues: {
-        ':upcoming': 'true',
-      },
-      ScanIndexForward: true,
-    })
+function showsTableName(): string | undefined {
+  const name = process.env.SHOWS_TABLE?.trim()
+  return name || undefined
+}
 
-    const response = await dynamoDocClient.send(command)
-    return response.Items || []
+function text(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined
+  const trimmed = value.trim()
+  return trimmed || undefined
+}
+
+function byDate(a: Show, b: Show): number {
+  return a.date.localeCompare(b.date) || a.id.localeCompare(b.id)
+}
+
+function normalizeShow(item: object): Show | null {
+  const record = item as Record<string, unknown>
+  const id = text(record.id) ?? text(record['`id`'])
+  const date = text(record.date)
+  const venue = text(record.venue)
+  const city = text(record.city)
+  const state = text(record.state)
+  if (!id || !date || !venue || !city || !state || !hasValidShowDate({ date })) return null
+
+  const show: Show = {
+    id,
+    date,
+    venue,
+    city,
+    state,
+    isUpcoming: isShowDateUpcoming({ date }),
+  }
+  const address = text(record.address)
+  const time = text(record.time)
+  const doors = text(record.doors)
+  const ticketUrl = text(record.ticketUrl)
+  if (address) show.address = address
+  if (time) show.time = time
+  if (doors) show.doors = doors
+  if (ticketUrl) show.ticketUrl = ticketUrl
+  return show
+}
+
+function staticShows(): Show[] {
+  return (showsData as Show[])
+    .map((show) => normalizeShow(show))
+    .filter((show): show is Show => show !== null)
+    .sort(byDate)
+}
+
+/** Paginated table scan. Throws on permission, network, and missing-table errors. */
+export async function scanShowItems(tableName: string): Promise<Record<string, unknown>[]> {
+  const items: Record<string, unknown>[] = []
+  let startKey: Record<string, unknown> | undefined
+
+  do {
+    const response = await docClient().send(
+      new ScanCommand({
+        TableName: tableName,
+        ExclusiveStartKey: startKey,
+      })
+    )
+    for (const item of response.Items ?? []) {
+      items.push(item as Record<string, unknown>)
+    }
+    startKey = response.LastEvaluatedKey as Record<string, unknown> | undefined
+  } while (startKey)
+
+  return items
+}
+
+export async function readShowsTable(tableName: string): Promise<Show[]> {
+  const items = await scanShowItems(tableName)
+  return items.map((item) => normalizeShow(item)).filter((show): show is Show => show !== null).sort(byDate)
+}
+
+export async function getAllShows(): Promise<Show[]> {
+  const table = showsTableName()
+  if (!table) return staticShows()
+
+  try {
+    return await readShowsTable(table)
   } catch (error) {
     const name = error instanceof Error ? error.name : 'Error'
     const message = error instanceof Error ? error.message : String(error)
-    console.error(`Error fetching shows: ${name}: ${message}`)
-    return []
+    console.error('shows: DynamoDB read failed', name, message)
+    return staticShows()
   }
+}
+
+export async function getUpcomingShows(): Promise<Show[]> {
+  return filterUpcomingShowsByDate(await getAllShows())
+}
+
+export async function getNextShow(): Promise<Show | null> {
+  const upcoming = await getUpcomingShows()
+  return upcoming[0] ?? null
 }
 
 export async function saveContactMessage(message: any): Promise<void> {
@@ -55,7 +141,7 @@ export async function saveContactMessage(message: any): Promise<void> {
       Item: item,
     })
 
-    await dynamoDocClient.send(command)
+    await docClient().send(command)
   } catch (error) {
     console.error('Error saving message:', error)
     throw error

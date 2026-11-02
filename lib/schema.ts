@@ -8,6 +8,7 @@ export interface Show {
   time?: string
   doors?: string
   ticketUrl?: string
+  /** Written on new items. Readers ignore it and compare `date` with today in America/New_York. */
   isUpcoming: boolean
 }
 
