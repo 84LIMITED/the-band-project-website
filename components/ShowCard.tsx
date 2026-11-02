@@ -35,38 +35,36 @@ export default function ShowCard({ show, index = 0 }: ShowCardProps) {
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
       whileHover={{ scale: 1.02 }}
-      className="relative z-10 border border-white/20 p-6 hover:z-20 hover:border-white/40 transition-colors"
+      className="relative z-10 flex h-full min-w-0 flex-col gap-6 border border-white/20 p-6 hover:z-20 hover:border-white/40 transition-colors"
     >
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div className="flex-1">
-          <time className="text-3xl font-light mb-2 block" dateTime={show.date}>
-            {formatDate(show.date)}
-          </time>
-          <h3 className="text-xl font-medium mb-1">{show.venue}</h3>
-          <p className="text-secondary">
-            {show.city}, {show.state}
+      <div className="flex w-full min-w-0 flex-col gap-4">
+        <time className="block whitespace-nowrap text-3xl font-light lg:text-4xl" dateTime={show.date}>
+          {formatDate(show.date)}
+        </time>
+        <h3 className="text-xl font-medium">{show.venue}</h3>
+        <p className="text-secondary">
+          {show.city}, {show.state}
+        </p>
+        {show.address && <p className="text-sm text-secondary">{show.address}</p>}
+        {show.time && (
+          <p className="text-sm text-secondary">
+            {show.doors && `Doors: ${show.doors} | `}Show: {show.time}
           </p>
-          {show.address && <p className="text-sm text-secondary mt-1">{show.address}</p>}
-          {show.time && (
-            <p className="text-sm text-secondary mt-2">
-              {show.doors && `Doors: ${show.doors} | `}Show: {show.time}
-            </p>
-          )}
-        </div>
+        )}
+      </div>
 
-        <div className="flex flex-col gap-3 sm:min-w-[220px]">
-          {clips.length > 0 && (
-            <button
-              type="button"
-              onClick={() => openDrawer(show.id)}
-              aria-label={`Watch highlights from ${show.venue}`}
-              className="w-full px-6 py-3 border border-white text-white font-medium uppercase tracking-wider text-sm text-center hover:bg-white hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              Watch
-            </button>
-          )}
-          <AddToCalendar show={show} />
-        </div>
+      <div className="mt-auto flex w-full flex-col items-stretch gap-3 self-start md:w-auto md:items-start">
+        {clips.length > 0 && (
+          <button
+            type="button"
+            onClick={() => openDrawer(show.id)}
+            aria-label={`Watch highlights from ${show.venue}`}
+            className="w-full self-start px-6 py-3 border border-white text-white font-medium uppercase tracking-wider text-sm text-center hover:bg-white hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:w-auto"
+          >
+            Watch
+          </button>
+        )}
+        <AddToCalendar show={show} />
       </div>
     </motion.article>
   )

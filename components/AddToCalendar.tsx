@@ -39,7 +39,7 @@ export default function AddToCalendar({ show }: AddToCalendarProps) {
   const label = `Add ${show.venue} to calendar`
 
   return (
-    <div ref={rootRef} className="relative">
+    <div ref={rootRef} className="relative w-full self-start md:w-auto">
       <button
         type="button"
         aria-label={label}
@@ -47,7 +47,7 @@ export default function AddToCalendar({ show }: AddToCalendarProps) {
         aria-haspopup="menu"
         aria-controls={menuId}
         onClick={() => setOpen((value) => !value)}
-        className="w-full px-6 py-3 border border-white text-white font-medium uppercase tracking-wider text-sm text-center hover:bg-white hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="w-full self-start px-6 py-3 border border-white text-white font-medium uppercase tracking-wider text-sm text-center hover:bg-white hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:w-auto"
       >
         Add to Calendar
       </button>

@@ -84,7 +84,7 @@ export default function HomePage({ upcomingShows }: { upcomingShows: Show[] }) {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
+            <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2">
               {upcomingShows.map((show, index) => (
                 <ShowCard key={show.id} show={show} index={index} />
               ))}

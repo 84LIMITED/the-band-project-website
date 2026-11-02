@@ -98,7 +98,7 @@ export default function ShowsListing({ shows }: { shows: Show[] }) {
 
           {/* Shows Grid */}
           {filteredShows.length > 0 ? (
-            <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
+            <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2">
               {filteredShows.map((show, index) => (
                 <ShowCard key={show.id} show={show} index={index} />
               ))}
