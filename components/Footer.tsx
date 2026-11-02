@@ -1,7 +1,8 @@
 import Script from 'next/script'
 import { generateStructuredData } from '@/lib/seo'
 import SignupForm from '@/components/SignupForm'
-import { SIGNUP_PAGE_PATH, SITE_ORIGIN } from '@/lib/newsletter-config'
+import SignupNavLink from '@/components/SignupNavLink'
+import { SITE_ORIGIN } from '@/lib/newsletter-config'
 
 export default function Footer() {
   // Use environment variable or default to localhost for development
@@ -42,11 +43,6 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href={SIGNUP_PAGE_PATH} className="hover:text-white transition-colors">
-                    Get show updates
-                  </a>
-                </li>
-                <li>
                   <a href="/private-parties" className="hover:text-white transition-colors">
                     Private Parties
                   </a>
@@ -80,6 +76,9 @@ export default function Footer() {
                   <a href="/gear" className="hover:text-white transition-colors">
                     Gear Store
                   </a>
+                </li>
+                <li>
+                  <SignupNavLink className="hover:text-white transition-colors" />
                 </li>
               </ul>
             </div>

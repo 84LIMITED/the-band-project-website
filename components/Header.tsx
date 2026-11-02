@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import { useMediaDrawer } from './MediaDrawerProvider'
 import { IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
+import { SIGNUP_PAGE_PATH } from '@/lib/newsletter-config'
 
 const showsSubmenu = [
   { label: 'Upcoming Shows', href: '/shows' },
@@ -20,8 +21,8 @@ const topNavItems = [
   { label: 'Setlist', href: '/setlist' },
   { label: 'Videos', href: '/videos' },
   { label: 'Contact', href: '/contact' },
-  { label: 'Email List', href: '/#email-list' },
   { label: 'Gear Store', href: '/gear' },
+  { label: 'Sign Up for Show Alerts', href: SIGNUP_PAGE_PATH },
 ]
 
 export default function Header() {
@@ -46,26 +47,6 @@ export default function Header() {
     pathname === '/bars-breweries' ||
     pathname === '/festivals-town-events'
   const isActive = (href: string) => pathname === href
-
-  function onEmailListClick(event: React.MouseEvent<HTMLAnchorElement>) {
-    const menuWasOpen = isMobileMenuOpen
-    setIsMobileMenuOpen(false)
-    setIsShowsOpen(false)
-    if (pathname !== '/') return
-
-    event.preventDefault()
-    const jump = () => {
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      document.getElementById('email-list')?.scrollIntoView({
-        behavior: reduced ? 'auto' : 'smooth',
-        block: 'start',
-      })
-      window.history.pushState(null, '', '/#email-list')
-      document.getElementById('signup-email-footer')?.focus({ preventScroll: true })
-    }
-    if (menuWasOpen) window.setTimeout(jump, 320)
-    else jump()
-  }
 
   return (
     <>
@@ -152,7 +133,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={item.href === '/#email-list' ? onEmailListClick : undefined}
+                  aria-current={item.href === SIGNUP_PAGE_PATH && isActive(item.href) ? 'page' : undefined}
                   className="relative group text-sm uppercase tracking-wider"
                 >
                   <span className={isActive(item.href) ? 'opacity-100' : 'opacity-70 group-hover:opacity-100 transition-opacity'}>
@@ -355,8 +336,9 @@ export default function Header() {
                 >
                   <Link
                     href={item.href}
-                    onClick={item.href === '/#email-list' ? onEmailListClick : () => setIsMobileMenuOpen(false)}
-                    className={`text-2xl uppercase tracking-wider ${
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    aria-current={item.href === SIGNUP_PAGE_PATH && isActive(item.href) ? 'page' : undefined}
+                    className={`text-2xl uppercase tracking-wider text-center ${
                       isActive(item.href) ? 'opacity-100' : 'opacity-70'
                     }`}
                   >
