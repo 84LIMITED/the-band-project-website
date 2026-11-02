@@ -24,19 +24,20 @@ export async function getUpcomingShows(): Promise<any[]> {
   try {
     const command = new QueryCommand({
       TableName: SHOWS_TABLE,
-      IndexName: 'upcoming-shows-index', // GSI for filtering upcoming shows
-      KeyConditionExpression: 'isUpcoming = :upcoming',
+      IndexName: 'upcoming-shows-index',
+      KeyConditionExpression: 'sUpcoming = :upcoming',
       ExpressionAttributeValues: {
-        ':upcoming': 'true', // DynamoDB uses String for boolean values in keys
+        ':upcoming': 'true',
       },
-      ScanIndexForward: true, // Sort ascending by date
+      ScanIndexForward: true,
     })
 
     const response = await dynamoDocClient.send(command)
     return response.Items || []
   } catch (error) {
-    console.error('Error fetching shows:', error)
-    // Fallback to static data if DynamoDB fails
+    const name = error instanceof Error ? error.name : 'Error'
+    const message = error instanceof Error ? error.message : String(error)
+    console.error(`Error fetching shows: ${name}: ${message}`)
     return []
   }
 }
