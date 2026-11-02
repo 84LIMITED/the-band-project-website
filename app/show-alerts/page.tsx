@@ -182,9 +182,9 @@ export default function ShowAlertsPage() {
       />
 
       <div className="px-4 pt-20 pb-24 md:pt-28">
-        <div className="mx-auto max-w-[640px]">
+        <div className="mx-auto max-w-[640px] [&_h1]:uppercase [&_h2]:uppercase [&_h3]:uppercase">
           <p className="text-xs tracking-[0.16em] text-secondary mb-3">THE BAND PROJECT · WYCKOFF, NJ</p>
-          <h1 className="text-4xl md:text-6xl font-black leading-tight mb-3">Don&apos;t miss a show.</h1>
+          <h1 className="text-4xl md:text-6xl font-black uppercase leading-tight mb-3">Don&apos;t miss a show.</h1>
           <p className="text-lg text-secondary mb-6">
             Sign up and we&apos;ll send you updates on upcoming events and shows.
           </p>
@@ -194,7 +194,7 @@ export default function ShowAlertsPage() {
           </Suspense>
 
           <section className="mt-16" aria-labelledby="what-youll-get">
-            <h2 id="what-youll-get" className="text-2xl font-bold mb-4">
+            <h2 id="what-youll-get" className="text-2xl font-bold uppercase mb-4">
               What you&apos;ll get
             </h2>
             <ul className="border-t border-white/20">
@@ -209,7 +209,7 @@ export default function ShowAlertsPage() {
           </section>
 
           <section className="mt-16" aria-labelledby="about-the-band">
-            <h2 id="about-the-band" className="text-2xl font-bold mb-4">
+            <h2 id="about-the-band" className="text-2xl font-bold uppercase mb-4">
               About the band
             </h2>
             <p className="text-secondary">
@@ -220,7 +220,7 @@ export default function ShowAlertsPage() {
 
           {show && (
             <section className="mt-16" aria-labelledby="next-up">
-              <h2 id="next-up" className="text-2xl font-bold mb-4">
+              <h2 id="next-up" className="text-2xl font-bold uppercase mb-4">
                 Next up
               </h2>
               <ShowCard show={show} />
@@ -228,13 +228,13 @@ export default function ShowAlertsPage() {
           )}
 
           <section className="mt-16" aria-labelledby="show-alerts-faq">
-            <h2 id="show-alerts-faq" className="text-2xl font-bold mb-4">
+            <h2 id="show-alerts-faq" className="text-2xl font-bold uppercase mb-4">
               FAQ
             </h2>
             <div className="border-t border-white/20">
               {FAQ.map((item) => (
                 <article key={item.question} className="border-b border-white/20 py-4">
-                  <h3 className="text-lg font-semibold">{item.question}</h3>
+                  <h3 className="text-lg font-semibold uppercase">{item.question}</h3>
                   <FaqAnswer item={item} />
                 </article>
               ))}
