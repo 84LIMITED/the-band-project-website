@@ -195,9 +195,15 @@ export async function sendConfirmationEmail(
       unsubscribeUrl,
       unsubscribeApiUrl: apiUrl,
     })
+    console.log('subscribe: ses send success')
     return true
   } catch (error) {
-    console.error('[newsletter] Confirmation email failed', error)
+    const name = error instanceof Error ? error.name : 'Error'
+    const message = (error instanceof Error ? error.message : String(error)).replace(
+      /[^\s@<>]+@[^\s@<>]+/g,
+      '[redacted]'
+    )
+    console.error(`subscribe: ses error ${name}: ${message}`)
     return false
   }
 }

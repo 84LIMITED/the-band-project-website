@@ -30,6 +30,7 @@ export async function POST(request: Request) {
   }
 
   if (typeof body.website === 'string' && body.website.trim() !== '') {
+    console.log('subscribe: honeypot drop')
     return NextResponse.json(SUCCESS)
   }
 
@@ -40,11 +41,14 @@ export async function POST(request: Request) {
 
   const ip = clientIp(request)
   if (!(await allowSubscribeAttempt(ip))) {
+    console.log('subscribe: rate-limit drop')
     return NextResponse.json(SUCCESS)
   }
 
   const token = typeof body.turnstileToken === 'string' ? body.turnstileToken : ''
-  if (!(await verifyTurnstile(token, ip))) {
+  const turnstileOk = await verifyTurnstile(token, ip)
+  console.log(`subscribe: turnstile ${turnstileOk ? 'pass' : 'fail'}`)
+  if (!turnstileOk) {
     return NextResponse.json(SUCCESS)
   }
 
@@ -57,6 +61,11 @@ export async function POST(request: Request) {
 
   try {
     const prepared = await prepareSubscription(email, source)
+    if (prepared.created) {
+      console.log('subscribe: record created')
+    } else if (!prepared.send) {
+      console.log(`subscribe: existing record skipped status=${prepared.subscriber.status}`)
+    }
     if (prepared.send && prepared.subscriber.confirmToken) {
       const sent = await sendConfirmationEmail(
         email,

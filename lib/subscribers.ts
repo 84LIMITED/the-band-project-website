@@ -146,6 +146,7 @@ async function saveSubscriber(subscriber: Subscriber): Promise<void> {
 export interface PreparedSubscription {
   subscriber: Subscriber
   send: boolean
+  created: boolean
 }
 
 /**
@@ -166,15 +167,15 @@ export async function prepareSubscription(email: string, source: string): Promis
       source,
     }
     await saveSubscriber(subscriber)
-    return { subscriber, send: true }
+    return { subscriber, send: true, created: true }
   }
 
   if (existing.status === 'active' || existing.status === 'bounced' || existing.status === 'complained') {
-    return { subscriber: existing, send: false }
+    return { subscriber: existing, send: false, created: false }
   }
 
   if (existing.status === 'pending' && confirmationIsThrottled(existing)) {
-    return { subscriber: existing, send: false }
+    return { subscriber: existing, send: false, created: false }
   }
 
   const subscriber: Subscriber = {
@@ -185,7 +186,7 @@ export async function prepareSubscription(email: string, source: string): Promis
   }
   delete subscriber.lastConfirmSentAt
   await saveSubscriber(subscriber)
-  return { subscriber, send: true }
+  return { subscriber, send: true, created: false }
 }
 
 export async function markConfirmationSent(email: string): Promise<void> {
