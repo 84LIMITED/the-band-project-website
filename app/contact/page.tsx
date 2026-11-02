@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react'
 import Script from 'next/script'
 import { motion } from 'framer-motion'
 import { generateStructuredData } from '@/lib/seo'
+import { SIGNUP_PAGE_PATH } from '@/lib/newsletter-config'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -96,6 +97,11 @@ export default function ContactPage() {
             <h1 className="text-5xl md:text-6xl font-black mb-6 uppercase">Book The Band Project</h1>
             <p className="text-xl text-secondary">
               Request a quote for your venue or event—we respond promptly.
+            </p>
+            <p className="text-sm mt-6">
+              <a href={SIGNUP_PAGE_PATH} className="text-white underline hover:opacity-80">
+                Get show updates
+              </a>
             </p>
           </header>
 

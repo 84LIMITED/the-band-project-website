@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { AnimatePresence, motion } from 'framer-motion'
 interface SignupFormProps {
-  source: 'footer' | 'shows'
+  source: string
   variant?: 'compact' | 'full'
 }
 

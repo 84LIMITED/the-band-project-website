@@ -5,7 +5,8 @@ import Script from 'next/script'
 import { motion } from 'framer-motion'
 import ShowCard from '@/components/ShowCard'
 import SignupForm from '@/components/SignupForm'
-import { generateStructuredData } from '@/lib/seo'
+import { SIGNUP_PAGE_PATH } from '@/lib/newsletter-config'
+import { generateShowEvent } from '@/lib/seo'
 import { filterUpcomingShowsByDate } from '@/lib/shows'
 import { Show } from '@/lib/schema'
 import showsData from '@/content/shows.json'
@@ -43,29 +44,7 @@ export default function ShowsPage() {
 
   const uniqueStates = Array.from(new Set(shows.map((show) => show.state))).sort()
 
-  const eventData = filteredShows.map((show) =>
-    generateStructuredData('Event', {
-      name: `The Band Project at ${show.venue}`,
-      startDate: show.date,
-      location: {
-        '@type': 'Place',
-        name: show.venue,
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: show.city,
-          addressRegion: show.state,
-        },
-      },
-      offers: show.ticketUrl
-        ? {
-            '@type': 'Offer',
-            url: show.ticketUrl,
-            price: '0',
-            priceCurrency: 'USD',
-          }
-        : undefined,
-    })
-  )
+  const eventData = filteredShows.map((show) => generateShowEvent(show))
 
   return (
     <>
@@ -170,6 +149,11 @@ export default function ShowsPage() {
 
           <div id="show-reminders" className="mt-16">
             <SignupForm source="shows" variant="full" />
+            <p className="mt-6 text-sm">
+              <a href={SIGNUP_PAGE_PATH} className="text-white underline hover:opacity-80">
+                Get show updates
+              </a>
+            </p>
           </div>
         </div>
       </div>

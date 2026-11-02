@@ -39,5 +39,15 @@
     "address": "991 Goffle Rd, Hawthorne, NJ 07506",
     "time": "9:00 PM – 12:00 AM",
     "isUpcoming": true
+  },
+  {
+    "id": "show-6",
+    "date": "2027-05-22",
+    "venue": "The Mason Jar",
+    "city": "Mahwah",
+    "state": "NJ",
+    "address": "219 Ramapo Valley Rd, Mahwah, NJ 07430",
+    "time": "8:00 PM – 11:00 PM",
+    "isUpcoming": true
   }
 ]

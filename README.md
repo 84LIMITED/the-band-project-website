@@ -68,6 +68,7 @@ npm start
   /shows            # Shows page
   /contact          # Contact page
   /gear             # Gear store page
+  /show-alerts      # Dedicated show-alerts signup page
   /newsletter/confirm  # Double opt-in confirmation page
   /unsubscribe      # One-click unsubscribe page
   layout.tsx        # Root layout
@@ -79,7 +80,8 @@ npm start
 /components
   Header.tsx        # Global navigation
   Footer.tsx        # Footer with structured data and signup form
-  SignupForm.tsx    # Fan list signup (footer and shows)
+  SignupForm.tsx    # Fan list signup (footer, shows, and /show-alerts)
+  ShowAlertsSignup.tsx  # Reads ?src= and renders the signup page form
   HeroVideo.tsx     # Hero video component
   ShowCard.tsx      # Show card component
   MediaDrawer.tsx   # Media drawer component
@@ -88,7 +90,7 @@ npm start
   aws.ts            # AWS service integrations
   subscribers.ts    # Fan list DynamoDB helpers and local JSON fallback
   email.ts          # Confirmation and newsletter sending via SES
-  newsletter-config.ts  # From name, reply-to, and postal address
+  newsletter-config.ts  # From name, reply-to, postal address, and signup page path
   schema.ts         # TypeScript interfaces
   seo.ts            # SEO utilities
 
@@ -241,7 +243,23 @@ Signup is protected in layers:
 
 Set `POSTAL_ADDRESS` in `lib/newsletter-config.ts` before any of those commands. The script refuses to run while it is still `TODO`.
 
+## Signup page and short link
+
+The dedicated signup page is `/show-alerts` (`SIGNUP_PAGE_PATH` in `lib/newsletter-config.ts`). Printed material and spoken mentions use `/join`, which permanently redirects (308) to `/show-alerts` and keeps the query string.
+
+Track where a signup came from with `?src=`. Allowed values are lowercase letters, numbers, `_`, and `-`, up to 20 characters. Anything else is ignored and stored as `page`. Common values: `instagram`, `facebook`, `qr`, `flyer`.
+
+Example share URL: `https://thebandproject.live/join?src=instagram`
+
+The home-page footer signup stays at `/#email-list`.
+
 ## Managing the Fan List
+
+Subscriber `source` is `footer`, `shows`, `page`, `import`, or a sanitized `src` value.
+
+| Field | Note |
+| --- | --- |
+| `source` | `footer`, `shows`, `page`, `import`, or a sanitized `src` value (`[a-z0-9_-]`, max 20) |
 
 View subscribers in the AWS Console: DynamoDB → `band-project-subscribers` → Explore items.
 

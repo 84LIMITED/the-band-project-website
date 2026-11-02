@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { sendConfirmationEmail } from '@/lib/email'
+import { resolveSubscriberSource } from '@/lib/newsletter-config'
 import {
   allowSubscribeAttempt,
   isValidEmail,
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, message: 'Enter a valid email address.' }, { status: 400 })
   }
 
-  const source = body.source === 'shows' || body.source === 'footer' || body.source === 'import' ? body.source : 'footer'
+  const source = resolveSubscriberSource(body.source, 'footer')
 
   try {
     const prepared = await prepareSubscription(email, source)

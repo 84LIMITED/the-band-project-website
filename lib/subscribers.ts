@@ -22,6 +22,7 @@ export interface Subscriber {
   confirmedAt?: string
   unsubscribedAt?: string
   lastConfirmSentAt?: string
+  /** `footer`, `shows`, `page`, `import`, or a sanitized `src` value (`[a-z0-9_-]`, max 20). */
   source?: string
   lastIssueSent?: string
 }

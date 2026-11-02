@@ -1,3 +1,23 @@
+/** Production origin used for canonical URLs and share links. */
+export const SITE_ORIGIN = 'https://thebandproject.live'
+
+/** Canonical signup page. Rename this to move the page. */
+export const SIGNUP_PAGE_PATH = '/show-alerts'
+
+export const SIGNUP_PAGE_TITLE = 'Show Alerts: NJ Cover Band Updates | The Band Project'
+
+export const SIGNUP_PAGE_DESCRIPTION =
+  'Get show updates from The Band Project, a Wyckoff, NJ cover band. Sign up for dates, venues, and news on upcoming events. 8-10 emails a year.'
+
+const SIGNUP_SOURCE_PATTERN = /^[a-z0-9_-]{1,20}$/
+
+/** Keep `footer`, `shows`, `page`, `import`, and short `src` slugs. Anything else uses the fallback. */
+export function resolveSubscriberSource(value: unknown, fallback = 'footer'): string {
+  if (typeof value !== 'string') return fallback
+  const normalized = value.trim().toLowerCase()
+  return SIGNUP_SOURCE_PATTERN.test(normalized) ? normalized : fallback
+}
+
 /** Display name on newsletter and confirmation messages. */
 export const FROM_NAME = 'The Band Project'
 

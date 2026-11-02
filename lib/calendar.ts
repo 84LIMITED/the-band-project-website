@@ -196,6 +196,29 @@ function vtimezone(): string[] {
   ]
 }
 
+function isoWithOffset(dateStr: string, hhmm: string): string {
+  const utc = zonedLocalToUtc(dateStr, hhmm)
+  const [year, month, day] = dateStr.split('-').map(Number)
+  const [hours, minutes] = hhmm.split(':').map(Number)
+  const wall = Date.UTC(year, month - 1, day, hours, minutes, 0)
+  const offsetMin = Math.round((wall - utc.getTime()) / 60000)
+  const sign = offsetMin >= 0 ? '+' : '-'
+  const abs = Math.abs(offsetMin)
+  const offsetHours = String(Math.floor(abs / 60)).padStart(2, '0')
+  const offsetMinutes = String(abs % 60).padStart(2, '0')
+  return `${dateStr}T${hhmm}:00${sign}${offsetHours}:${offsetMinutes}`
+}
+
+/** Local start and end with the America/New_York offset, for Event JSON-LD. */
+export function showEventIsoRange(show: CalendarShow): { startDate: string; endDate: string } | null {
+  const range = resolveRange(show)
+  if (!range || range.allDay) return null
+  return {
+    startDate: isoWithOffset(range.start.date, range.start.time),
+    endDate: isoWithOffset(range.end.date, range.end.time),
+  }
+}
+
 export function buildIcs(show: CalendarShow): string | null {
   const range = resolveRange(show)
   if (!range) return null

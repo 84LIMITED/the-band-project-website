@@ -50,6 +50,7 @@ export default function RootLayout({
   const musicGroupSchema = {
     '@context': 'https://schema.org',
     '@type': 'MusicGroup',
+    '@id': 'https://thebandproject.live/#musicgroup',
     name: 'The Band Project',
     url: baseUrl,
     description: 'The Band Project is a high-energy live band based in Northern New Jersey performing across the New York tri-state area. Frequently booked for town festivals, summer concert series, breweries, restaurants, private events, and corporate entertainment.',

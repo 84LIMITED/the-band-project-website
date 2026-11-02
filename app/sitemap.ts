@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { SIGNUP_PAGE_PATH } from '@/lib/newsletter-config'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thebandproject.live'
@@ -49,6 +50,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/setlist`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}${SIGNUP_PAGE_PATH}`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,

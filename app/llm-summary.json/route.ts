@@ -3,6 +3,7 @@ import { getUpcomingShows } from '@/lib/aws'
 import showsData from '@/content/shows.json'
 import { filterUpcomingShowsByDate } from '@/lib/shows'
 import { Show } from '@/lib/schema'
+import { SIGNUP_PAGE_DESCRIPTION, SIGNUP_PAGE_PATH, SITE_ORIGIN } from '@/lib/newsletter-config'
 
 export async function GET(request: Request) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
@@ -20,7 +21,7 @@ export async function GET(request: Request) {
       shows = showsData as Show[]
     }
 
-    shows = filterUpcomingShowsByDate(shows)
+    shows = filterUpcomingShowsByDate(shows).sort((a, b) => a.date.localeCompare(b.date))
 
     // Format shows for LLM consumption
     const formattedShows = shows.map((show) => ({
@@ -28,6 +29,7 @@ export async function GET(request: Request) {
       venue: show.venue,
       city: show.city,
       state: show.state,
+      address: show.address,
       time: show.time,
       ticketUrl: show.ticketUrl,
     }))
@@ -45,10 +47,17 @@ export async function GET(request: Request) {
         'Led Zeppelin',
       ],
       upcomingShows: formattedShows,
+      signup: {
+        description: "Sign up for email updates about The Band Project's upcoming shows and events.",
+        url: `${SITE_ORIGIN}${SIGNUP_PAGE_PATH}`,
+        cadence: '8-10 emails a year',
+        details: SIGNUP_PAGE_DESCRIPTION,
+      },
       officialLinks: {
         website: baseUrl,
         contact: `${baseUrl}/contact`,
         shows: `${baseUrl}/shows`,
+        showAlerts: `${SITE_ORIGIN}${SIGNUP_PAGE_PATH}`,
         background: `${baseUrl}/background`,
         gear: `${baseUrl}/gear`,
       },

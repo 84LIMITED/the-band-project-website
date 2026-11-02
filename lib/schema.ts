@@ -4,7 +4,7 @@ export interface Show {
   venue: string
   city: string
   state: string
-  address?: string // Full street address for calendar only; not displayed on site
+  address?: string // Full street address, shown on the card and used in calendar files and event structured data
   time?: string
   doors?: string
   ticketUrl?: string

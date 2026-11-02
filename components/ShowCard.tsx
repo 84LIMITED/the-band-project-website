@@ -46,6 +46,7 @@ export default function ShowCard({ show, index = 0 }: ShowCardProps) {
           <p className="text-secondary">
             {show.city}, {show.state}
           </p>
+          {show.address && <p className="text-sm text-secondary mt-1">{show.address}</p>}
           {show.time && (
             <p className="text-sm text-secondary mt-2">
               {show.doors && `Doors: ${show.doors} | `}Show: {show.time}

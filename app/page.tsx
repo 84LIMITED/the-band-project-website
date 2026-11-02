@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 import HeroVideo from '@/components/HeroVideo'
 import ShowCard from '@/components/ShowCard'
 import { useMediaDrawer } from '@/components/MediaDrawerProvider'
-import { generateStructuredData, IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
+import { generateShowEvent, generateStructuredData, IMAGE_VIDEO_ALT_TITLE } from '@/lib/seo'
 import { filterUpcomingShowsByDate } from '@/lib/shows'
 import { Show, MediaItem } from '@/lib/schema'
 import showsData from '@/content/shows.json'
@@ -29,29 +29,7 @@ export default function HomePage() {
     url: baseUrl,
   })
 
-  const eventData = upcomingShows.map((show) =>
-    generateStructuredData('Event', {
-      name: `The Band Project at ${show.venue}`,
-      startDate: show.date,
-      location: {
-        '@type': 'Place',
-        name: show.venue,
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: show.city,
-          addressRegion: show.state,
-        },
-      },
-      offers: show.ticketUrl
-        ? {
-            '@type': 'Offer',
-            url: show.ticketUrl,
-            price: '0',
-            priceCurrency: 'USD',
-          }
-        : undefined,
-    })
-  )
+  const eventData = upcomingShows.map((show) => generateShowEvent(show))
 
   return (
     <>

@@ -1,13 +1,16 @@
 import Script from 'next/script'
 import { generateStructuredData } from '@/lib/seo'
 import SignupForm from '@/components/SignupForm'
+import { SIGNUP_PAGE_PATH, SITE_ORIGIN } from '@/lib/newsletter-config'
 
 export default function Footer() {
   // Use environment variable or default to localhost for development
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://thebandproject.live'
   const currentYear = new Date().getFullYear()
 
-  const websiteStructuredData = generateStructuredData('WebSite', {})
+  const websiteStructuredData = generateStructuredData('WebSite', {
+    '@id': `${SITE_ORIGIN}/#website`,
+  })
 
   return (
     <>
@@ -36,6 +39,11 @@ export default function Footer() {
                 <li>
                   <a href="/shows" className="hover:text-white transition-colors">
                     Shows
+                  </a>
+                </li>
+                <li>
+                  <a href={SIGNUP_PAGE_PATH} className="hover:text-white transition-colors">
+                    Get show updates
                   </a>
                 </li>
                 <li>
